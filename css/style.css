@@ -1,0 +1,40 @@
+#scrolly {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+#chart-container {
+    position: -webkit-sticky;
+    position: sticky;
+    width: 100%;
+    margin: 0;
+    top: 10vh; /* Jarak dari atas layar */
+    height: 80vh; /* Tinggi area grafik */
+    background-color: #f9f9f9;
+    z-index: 0;
+}
+
+#chart {
+    width: 100%;
+    height: 100%;
+}
+
+article {
+    position: relative;
+    padding: 0 1rem;
+    max-width: 40rem;
+    margin: 0 auto;
+    z-index: 1;
+}
+
+.step {
+    margin: 0 auto 100vh auto; /* Memberi ruang antar slide */
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 1.5rem;
+    border: 1px solid #ccc;
+}
+
+.step:last-child {
+    margin-bottom: 50vh;
+}
