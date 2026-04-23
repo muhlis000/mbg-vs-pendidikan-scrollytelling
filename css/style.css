@@ -1,40 +1,152 @@
+/* ===========================
+   GLOBAL & TYPOGRAPHY
+=========================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-bg: #0f1117;
+  --color-text: #e8e8e8;
+  --color-accent: #f5a623;
+  --color-muted: #888;
+  --font-body: 'Georgia', serif;
+  --font-head: 'Arial', sans-serif;
+  --max-width: 900px;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+/* ===========================
+   HERO
+=========================== */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+#hero h1 {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--color-accent);
+  max-width: var(--max-width);
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--color-muted);
+  max-width: 600px;
+}
+
+/* ===========================
+   SCROLLYTELLING LAYOUT
+=========================== */
 #scrolly {
-    position: relative;
-    display: flex;
-    flex-direction: column;
+  position: relative;
+  display: flex;
+  gap: 2rem;
+  padding: 0 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-#chart-container {
-    position: -webkit-sticky;
-    position: sticky;
-    width: 100%;
-    margin: 0;
-    top: 10vh; /* Jarak dari atas layar */
-    height: 80vh; /* Tinggi area grafik */
-    background-color: #f9f9f9;
-    z-index: 0;
+/* Chart menempel saat scroll */
+.sticky-chart {
+  position: sticky;
+  top: 10vh;
+  width: 55%;
+  height: 80vh;
+  align-self: flex-start;
 }
 
-#chart {
-    width: 100%;
-    height: 100%;
+/* Kolom teks narasi */
+.steps-container {
+  width: 45%;
 }
 
-article {
-    position: relative;
-    padding: 0 1rem;
-    max-width: 40rem;
-    margin: 0 auto;
-    z-index: 1;
-}
-
+/* ===========================
+   STEP / NARASI
+=========================== */
 .step {
-    margin: 0 auto 100vh auto; /* Memberi ruang antar slide */
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 1.5rem;
-    border: 1px solid #ccc;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  opacity: 0.3;                  /* Redup saat tidak aktif */
+  transition: opacity 0.4s ease;
 }
 
-.step:last-child {
-    margin-bottom: 50vh;
+/* Kelas .is-active ditambahkan oleh main.js milik Orang 3 */
+.step.is-active {
+  opacity: 1;
+}
+
+.step-content {
+  background: rgba(255, 255, 255, 0.04);
+  border-left: 3px solid var(--color-accent);
+  padding: 1.5rem 1.5rem;
+  border-radius: 4px;
+}
+
+.step-content h2 {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  color: var(--color-accent);
+  margin-bottom: 0.75rem;
+}
+
+.step-content p {
+  color: var(--color-text);
+}
+
+/* ===========================
+   CONCLUSION
+=========================== */
+#conclusion {
+  max-width: var(--max-width);
+  margin: 8rem auto;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+#conclusion h2 {
+  font-family: var(--font-head);
+  font-size: 2rem;
+  color: var(--color-accent);
+  margin-bottom: 1.5rem;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width: 768px) {
+  #scrolly {
+    flex-direction: column;
+  }
+
+  .sticky-chart {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 50vh;
+    z-index: 10;
+  }
+
+  .steps-container {
+    width: 100%;
+  }
 }

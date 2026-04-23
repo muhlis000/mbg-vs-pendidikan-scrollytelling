@@ -1,36 +1,106 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MBG vs Pendidikan Gratis - Scrollytelling</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://unpkg.com/scrollama"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MBG vs Pendidikan: Mana yang Lebih Penting?</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <main id="scrolly">
-        <section id="chart-container">
-            <div id="chart"></div>
-        </section>
 
-        <article>
-            <div class="step" data-step="0">
-                <h1>Makan Siang Gratis vs Pendidikan Gratis</h1>
-                <p>Mana yang lebih penting bagi masa depan anak Indonesia?</p>
-            </div>
-            <div class="step" data-step="1">
-                <h2>Krisis Gizi & Stunting</h2>
-                <p>Analisis asupan protein di berbagai provinsi...</p>
-            </div>
-            <div class="step" data-step="2">
-                <h2>Akses Pendidikan & Biaya</h2>
-                <p>Perbandingan Rata-rata Lama Sekolah dengan biaya SMA...</p>
-            </div>
-        </article>
-    </main>
+  <!-- HERO SECTION -->
+  <header id="hero">
+    <h1>Makan Bergizi Gratis vs Pendidikan</h1>
+    <p class="subtitle">Mana yang lebih menentukan masa depan anak Indonesia?</p>
+  </header>
 
-    <script src="js/chart.js"></script>
-    <script src="js/main.js"></script>
+  <!-- SCROLLYTELLING WRAPPER -->
+  <!-- id dan class di bawah ini HARUS sesuai kesepakatan dengan Orang 3 -->
+  <section id="scrolly">
+
+    <!-- Sticky chart container (diisi oleh Orang 2) -->
+    <div id="chart-container" class="sticky-chart">
+      <!-- Chart akan di-render di sini oleh chart.js -->
+    </div>
+
+    <!-- Steps narasi (dikendalikan oleh main.js milik Orang 3) -->
+    <div class="steps-container">
+
+      <div class="step" data-step="0">
+        <div class="step-content">
+          <h2>Gambaran Awal</h2>
+          <p>
+            Setiap provinsi di Indonesia memiliki cerita berbeda soal
+            pendidikan. Rata-rata Lama Sekolah (RLS) mencerminkan seberapa
+            jauh warganya mengenyam bangku pendidikan.
+          </p>
+        </div>
+      </div>
+
+      <div class="step" data-step="1">
+        <div class="step-content">
+          <h2>Angka Partisipasi Sekolah Usia 7–12</h2>
+          <p>
+            Hampir seluruh provinsi mencatat APS di atas 98% untuk usia
+            SD. Namun kesenjangan mulai terlihat di jenjang yang lebih
+            tinggi.
+          </p>
+        </div>
+      </div>
+
+      <div class="step" data-step="2">
+        <div class="step-content">
+          <h2>Krisis di Usia SMA</h2>
+          <p>
+            APS usia 16–18 tahun anjlok tajam di banyak provinsi —
+            terendah di Papua Tengah, hanya 44,61%. Di sinilah biaya
+            pendidikan mulai menjadi tembok.
+          </p>
+        </div>
+      </div>
+
+      <div class="step" data-step="3">
+        <div class="step-content">
+          <h2>Biaya yang Membebani</h2>
+          <p>
+            Rata-rata biaya SMA/SMK bisa mencapai Rp 17,91 juta per tahun
+            di Papua — angka yang jauh dari jangkauan keluarga biasa.
+            Program MBG hadir, tapi apakah cukup?
+          </p>
+        </div>
+      </div>
+
+      <div class="step" data-step="4">
+        <div class="step-content">
+          <h2>Pola Antar Provinsi</h2>
+          <p>
+            DI Yogyakarta unggul di hampir semua indikator pendidikan,
+            sementara Papua Pegunungan dengan RLS 4,30 tahun masih
+            tertinggal jauh. Apa yang membedakan keduanya?
+          </p>
+        </div>
+      </div>
+
+    </div><!-- end .steps-container -->
+  </section><!-- end #scrolly -->
+
+  <!-- KESIMPULAN -->
+  <section id="conclusion">
+    <h2>Kesimpulan</h2>
+    <p>
+      Data menunjukkan bahwa tingginya biaya pendidikan berkorelasi dengan
+      rendahnya partisipasi sekolah. Program MBG dapat membantu, namun
+      tanpa intervensi biaya langsung di jenjang menengah atas,
+      ketimpangan pendidikan antar wilayah akan sulit diatasi.
+    </p>
+  </section>
+
+  <!-- Script dimuat di bawah, urutan penting! -->
+  <!-- Orang 1 & 2 & 3 yang mengurus file JS ini -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/scrollama"></script>
+  <script src="chart.js"></script>
+  <script src="main.js"></script>
+
 </body>
 </html>
