@@ -4,99 +4,66 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MBG vs Pendidikan: Mana yang Lebih Penting?</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- HERO SECTION -->
   <header id="hero">
-    <h1>Makan Bergizi Gratis vs Pendidikan</h1>
+    <h1>Makan Bergizi Gratis <br> <span class="highlight">vs Pendidikan</span></h1>
     <p class="subtitle">Mana yang lebih menentukan masa depan anak Indonesia?</p>
+    <div class="scroll-indicator">Scroll untuk mulai menjelajah ↓</div>
   </header>
 
-  <!-- SCROLLYTELLING WRAPPER -->
-  <!-- id dan class di bawah ini HARUS sesuai kesepakatan dengan Orang 3 -->
   <section id="scrolly">
-
-    <!-- Sticky chart container (diisi oleh Orang 2) -->
     <div id="chart-container" class="sticky-chart">
-      <!-- Chart akan di-render di sini oleh chart.js -->
-    </div>
+      </div>
 
-    <!-- Steps narasi (dikendalikan oleh main.js milik Orang 3) -->
     <div class="steps-container">
-
       <div class="step" data-step="0">
         <div class="step-content">
           <h2>Gambaran Awal</h2>
-          <p>
-            Setiap provinsi di Indonesia memiliki cerita berbeda soal
-            pendidikan. Rata-rata Lama Sekolah (RLS) mencerminkan seberapa
-            jauh warganya mengenyam bangku pendidikan.
-          </p>
+          <p>Setiap provinsi di Indonesia memiliki cerita berbeda. <strong>Rata-rata Lama Sekolah (RLS)</strong> mencerminkan seberapa jauh warganya mengenyam bangku pendidikan secara umum.</p>
         </div>
       </div>
 
       <div class="step" data-step="1">
         <div class="step-content">
-          <h2>Angka Partisipasi Sekolah Usia 7–12</h2>
-          <p>
-            Hampir seluruh provinsi mencatat APS di atas 98% untuk usia
-            SD. Namun kesenjangan mulai terlihat di jenjang yang lebih
-            tinggi.
-          </p>
+          <h2>Partisipasi SD (Usia 7–12)</h2>
+          <p>Kabar baiknya, hampir seluruh provinsi mencatat Angka Partisipasi Sekolah (APS) di atas 98% untuk usia SD. Di tahap ini, pendidikan dasar masih sangat terjangkau.</p>
         </div>
       </div>
 
       <div class="step" data-step="2">
         <div class="step-content">
           <h2>Krisis di Usia SMA</h2>
-          <p>
-            APS usia 16–18 tahun anjlok tajam di banyak provinsi —
-            terendah di Papua Tengah, hanya 44,61%. Di sinilah biaya
-            pendidikan mulai menjadi tembok.
-          </p>
+          <p>Namun, APS untuk usia 16–18 tahun anjlok tajam. Kesenjangan mulai melebar. Perhatikan <strong>Papua Tengah</strong> yang menyentuh angka terendah di 44,61%.</p>
         </div>
       </div>
 
       <div class="step" data-step="3">
         <div class="step-content">
           <h2>Biaya yang Membebani</h2>
-          <p>
-            Rata-rata biaya SMA/SMK bisa mencapai Rp 17,91 juta per tahun
-            di Papua — angka yang jauh dari jangkauan keluarga biasa.
-            Program MBG hadir, tapi apakah cukup?
-          </p>
+          <p>Mengapa anjlok? Biaya adalah tembok terbesar. Rata-rata biaya SMA/SMK di Papua bisa mencapai <strong>Rp 17,91 juta</strong> per tahun. Program MBG hadir, tapi apakah bisa menjawab beban biaya langsung ini?</p>
         </div>
       </div>
 
       <div class="step" data-step="4">
         <div class="step-content">
           <h2>Pola Antar Provinsi</h2>
-          <p>
-            DI Yogyakarta unggul di hampir semua indikator pendidikan,
-            sementara Papua Pegunungan dengan RLS 4,30 tahun masih
-            tertinggal jauh. Apa yang membedakan keduanya?
-          </p>
+          <p>Melihat korelasi antara <strong>Biaya SMA vs Lama Sekolah</strong>, wilayah seperti DI Yogyakarta unggul di segala indikator, sementara wilayah timur masih berjuang. Intervensi kebijakan harus tepat sasaran.</p>
         </div>
       </div>
-
-    </div><!-- end .steps-container -->
-  </section><!-- end #scrolly -->
-
-  <!-- KESIMPULAN -->
-  <section id="conclusion">
-    <h2>Kesimpulan</h2>
-    <p>
-      Data menunjukkan bahwa tingginya biaya pendidikan berkorelasi dengan
-      rendahnya partisipasi sekolah. Program MBG dapat membantu, namun
-      tanpa intervensi biaya langsung di jenjang menengah atas,
-      ketimpangan pendidikan antar wilayah akan sulit diatasi.
-    </p>
+    </div>
   </section>
 
-  <!-- Script dimuat di bawah, urutan penting! -->
-  <!-- Orang 1 & 2 & 3 yang mengurus file JS ini -->
+  <section id="conclusion">
+    <h2>Kesimpulan</h2>
+    <p>Data menunjukkan bahwa tingginya biaya pendidikan berkorelasi dengan rendahnya partisipasi sekolah di jenjang menengah atas. Program MBG memegang peran penting untuk gizi, namun tanpa intervensi biaya pendidikan, ketimpangan struktural antar wilayah akan sulit dipangkas.</p>
+  </section>
+
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://unpkg.com/scrollama"></script>
   <script src="chart.js"></script>
