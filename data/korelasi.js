@@ -1,7 +1,7 @@
 import fs from "fs";
 
 const data = JSON.parse(
-  fs.readFileSync("./data_provinsi.json", "utf-8")
+  fs.readFileSync("./data/data_provinsi.json", "utf-8")
 );
 // ==============================
 // FIELD
