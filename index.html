@@ -1,719 +1,542 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Eksplorasi dilema kebijakan Indonesia: Pendidikan Gratis vs Makan Bergizi Gratis. Data dari 38 provinsi mengungkap realita kesenjangan akses pendidikan dan gizi anak Indonesia.">
-    <title>Pendidikan Gratis vs Makan Bergizi Gratis — Dilema Kebijakan Indonesia 2024</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
-    
-    <!-- Fonts: Editorial Modern -->
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-    
-    <!-- Library -->
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <!-- ============================================= -->
-    <!-- LOADING SCREEN -->
-    <!-- ============================================= -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-content">
-            <div class="loading-icon">📊</div>
-            <div class="loading-title">Memuat Data 38 Provinsi</div>
-            <div class="loading-bar">
-                <div class="loading-bar-fill"></div>
-            </div>
-            <div class="loading-text">Menganalisis kesenjangan pendidikan & gizi Indonesia...</div>
-        </div>
-    </div>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Makan Siang Gratis atau Pendidikan Gratis — Mana yang Lebih Penting?</title>
 
-    <!-- ============================================= -->
-    <!-- READING PROGRESS BAR -->
-    <!-- ============================================= -->
-    <div class="progress-bar" id="progressBar"></div>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap"
+        rel="stylesheet" />
 
-    <!-- ============================================= -->
-    <!-- NAVIGATION (Sticky) -->
-    <!-- ============================================= -->
-    <nav class="site-nav" id="siteNav">
-        <div class="nav-brand">
-            📚 <span>Edu</span>vs<span>Gizi</span> 🍎
-        </div>
-        <div class="nav-dots" id="navDots">
-            <div class="nav-dot active" data-section="0" title="Pembuka"></div>
-            <div class="nav-dot" data-section="1" title="Biaya Pendidikan"></div>
-            <div class="nav-dot" data-section="2" title="Partisipasi Sekolah"></div>
-            <div class="nav-dot" data-section="3" title="Paradoks Biaya"></div>
-            <div class="nav-dot" data-section="4" title="MBG vs Pendidikan"></div>
-            <div class="nav-dot" data-section="5" title="Lama Sekolah"></div>
-            <div class="nav-dot" data-section="6" title="Kesimpulan"></div>
-        </div>
-    </nav>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- ============================================= -->
-    <!-- SECTION 1: HERO — DILEMA BESAR -->
-    <!-- ============================================= -->
-    <section class="scrolly-section hero-section" id="section-1" data-section="0">
-        <div class="hero-bg-pattern"></div>
-        <div class="hero-particles" id="heroParticles"></div>
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-badge animate-reveal">
-                    <span class="badge-dot"></span>
-                    <span>Eksplorasi Kebijakan 2024</span>
-                </div>
-                
-                <h1 class="main-title animate-reveal">
-                    <span class="title-line">Pendidikan Gratis</span>
-                    <span class="title-versus">versus</span>
-                    <span class="title-line">Makan Bergizi Gratis</span>
-                </h1>
-                
-                <h2 class="subtitle animate-reveal">
-                    Mana yang Lebih Mendesak untuk Masa Depan Anak Indonesia?
-                </h2>
-                
-                <p class="hero-description animate-reveal">
-                    Data dari <strong>38 provinsi</strong> mengungkap realitas pahit: 
-                    <span class="text-emphasis">44,61% anak usia 16–18 tahun di Papua Tengah tidak bersekolah</span>, 
-                    sementara biaya pendidikan SMA di Jakarta mencapai <strong>Rp14,4 juta</strong> per tahun. 
-                    Apakah solusinya sekolah gratis atau perut kenyang terlebih dahulu?
-                </p>
-                
-                <div class="hero-stats-preview animate-reveal">
-                    <div class="mini-stat" data-stat="1">
-                        <span class="mini-icon">📉</span>
-                        <span class="mini-number counter" data-target="4.30">0</span>
-                        <span class="mini-label">Tahun RLS Terendah</span>
-                        <span class="mini-detail">Papua Pegunungan</span>
-                    </div>
-                    <div class="mini-stat" data-stat="2">
-                        <span class="mini-icon">💰</span>
-                        <span class="mini-number counter" data-target="17.91">0</span>
-                        <span class="mini-label">Juta Biaya SMA Termahal</span>
-                        <span class="mini-detail">Papua</span>
-                    </div>
-                    <div class="mini-stat" data-stat="3">
-                        <span class="mini-icon">🎒</span>
-                        <span class="mini-number counter" data-target="44.61">0</span>
-                        <span class="mini-label">% APS 16-18 Terendah</span>
-                        <span class="mini-detail">Papua Tengah</span>
-                    </div>
-                </div>
-                
-                <div class="scroll-indicator animate-reveal">
-                    <span>Gulir untuk mengungkap data</span>
-                    <div class="scroll-arrow">↓</div>
-                </div>
-            </div>
-        </div>
-        <div class="hero-gradient-overlay"></div>
-    </section>
-
-    <!-- ============================================= -->
-    <!-- SECTION 2: REALITA BIAYA PENDIDIKAN -->
-    <!-- ============================================= -->
-    <section class="scrolly-section data-section" id="section-2" data-section="1">
-        <div class="container">
-            <div class="content-layout">
-                <div class="narasi-panel">
-                    <div class="section-number">
-                        <span class="section-num-text">01</span>
-                        <span class="section-num-label">Realita Biaya</span>
-                    </div>
-                    <h3 class="section-title">
-                        Biaya Pendidikan yang<br>Mencekik Leher
-                    </h3>
-                    <div class="narasi-body">
-                        <p>
-                            Realita di lapangan menunjukkan bahwa 
-                            <span class="highlight">biaya pendidikan di Indonesia sangat timpang</span>. 
-                            Di <strong>Sumatera Selatan</strong>, biaya SMA/SMK mencapai 
-                            <span class="data-point" data-value="14.6">Rp14,6 juta per tahun</span>, 
-                            sementara di <strong>Maluku</strong> hanya Rp4,99 juta — 
-                            <em>nyaris tiga kali lipat perbedaannya</em>.
-                        </p>
-                        <p>
-                            Pertanyaan besarnya: <em>apakah biaya tinggi menjamin partisipasi tinggi?</em>
-                            Data membuktikan sebaliknya. <strong>Banten</strong> dengan biaya SMP 
-                            Rp9,6 juta justru memiliki partisipasi SMA (APS 16-18) hanya 
-                            <span class="highlight">73,84%</span> — jauh di bawah rata-rata nasional.
-                        </p>
-                        <div class="insight-box">
-                            <div class="insight-icon">💡</div>
-                            <div class="insight-text">
-                                <strong>Insight Kunci:</strong> Biaya tinggi tanpa daya beli 
-                                masyarakat justru menjadi penghalang, bukan pendorong partisipasi sekolah.
-                                <span class="insight-source">Sumber: BPS, Susenas 2023</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="chart-panel">
-                    <div class="chart-wrapper" id="biaya-chart-container">
-                        <div class="chart-placeholder">
-                            <div class="chart-placeholder-icon">📊</div>
-                            <div class="chart-placeholder-text">Memuat grafik perbandingan biaya...</div>
-                        </div>
-                        <canvas id="biayaChart"></canvas>
-                    </div>
-                    <div class="chart-caption">
-                        Perbandingan Biaya Pendidikan per Jenjang di Beberapa Provinsi (dalam Juta Rupiah)
-                        <br><small>Data: BPS — Survei Sosial Ekonomi Nasional 2023</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================= -->
-    <!-- SECTION 3: PARTISIPASI SEKOLAH -->
-    <!-- ============================================= -->
-    <section class="scrolly-section data-section alt-bg" id="section-3" data-section="2">
-        <div class="container">
-            <div class="content-layout reverse">
-                <div class="chart-panel">
-                    <div class="chart-wrapper" id="partisipasi-chart-container">
-                        <div class="chart-placeholder">
-                            <div class="chart-placeholder-icon">📈</div>
-                            <div class="chart-placeholder-text">Memuat grafik partisipasi sekolah...</div>
-                        </div>
-                        <canvas id="partisipasiChart"></canvas>
-                    </div>
-                    <div class="chart-caption">
-                        Tingkat Partisipasi Sekolah per Kelompok Usia di Daerah Kritis (%)
-                        <br><small>APS 16-18: Angka Partisipasi Sekolah usia 16–18 tahun</small>
-                    </div>
-                </div>
-                <div class="narasi-panel">
-                    <div class="section-number">
-                        <span class="section-num-text">02</span>
-                        <span class="section-num-label">Partisipasi</span>
-                    </div>
-                    <h3 class="section-title">
-                        Partisipasi Sekolah yang<br>Mengkhawatirkan
-                    </h3>
-                    <div class="narasi-body">
-                        <p>
-                            <span class="highlight">Papua Tengah menjadi provinsi dengan kondisi paling kritis</span>. 
-                            Hanya <strong>44,61%</strong> anak usia 16–18 tahun yang bersekolah. 
-                            Artinya, <span class="text-emphasis">lebih dari separuh remaja di sana putus sekolah</span> 
-                            — sebuah krisis yang luput dari perhatian.
-                        </p>
-                        <p>
-                            Sementara <strong>DKI Jakarta</strong> dan <strong>DIY Yogyakarta</strong> 
-                            menikmati partisipasi di atas 88%. 
-                            <span class="highlight">Kesenjangan ini bukan hanya soal biaya, 
-                            tapi juga kemiskinan struktural</span> yang memaksa anak-anak 
-                            bekerja daripada belajar.
-                        </p>
-                        <div class="stats-comparison">
-                            <div class="stat-low">
-                                <span class="stat-value">44,61%</span>
-                                <span class="stat-region">Papua Tengah</span>
-                                <span class="stat-context">Tidak bersekolah: 55,39%</span>
-                            </div>
-                            <div class="stat-divider">
-                                <span class="divider-text">VS</span>
-                                <span class="divider-gap">Selisih</span>
-                                <span class="divider-value">48,42 poin</span>
-                            </div>
-                            <div class="stat-high">
-                                <span class="stat-value">93,03%</span>
-                                <span class="stat-region">DIY Yogyakarta</span>
-                                <span class="stat-context">Tidak bersekolah: 6,97%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================= -->
-    <!-- SECTION 4: PARADOKS BIAYA VS PARTISIPASI -->
-    <!-- ============================================= -->
-    <section class="scrolly-section data-section" id="section-4" data-section="3">
-        <div class="container">
-            <div class="content-layout">
-                <div class="narasi-panel">
-                    <div class="section-number">
-                        <span class="section-num-text">03</span>
-                        <span class="section-num-label">Paradoks</span>
-                    </div>
-                    <h3 class="section-title">
-                        Paradoks: Mahal ≠<br>Banyak yang Sekolah
-                    </h3>
-                    <div class="narasi-body">
-                        <p>
-                            <span class="highlight">Sumatera Selatan memiliki biaya SMA termahal kedua (Rp14,6 juta)</span>, 
-                            tapi partisipasi sekolah usia 16–18 tahun hanya 
-                            <strong>73,78%</strong>. Sebaliknya, 
-                            <span class="highlight">Maluku dengan biaya SMA termurah (Rp4,99 juta)</span> 
-                            memiliki partisipasi <strong>77,28%</strong> — 
-                            <em>lebih tinggi dari Sumatera Selatan</em>.
-                        </p>
-                        <p>
-                            Ini bukti nyata bahwa <span class="highlight">biaya tinggi tidak menjamin akses</span>. 
-                            Faktor seperti <strong>kemiskinan, lokasi geografis, dan infrastruktur</strong> 
-                            jauh lebih menentukan apakah seorang anak bisa bersekolah atau tidak.
-                        </p>
-                        <div class="insight-box warning">
-                            <div class="insight-icon">⚠️</div>
-                            <div class="insight-text">
-                                <strong>Paradoks Kebijakan:</strong> Subsidi pendidikan di daerah 
-                                dengan biaya tinggi justru tidak efektif jika daya beli masyarakat 
-                                sudah terlampau rendah.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="chart-panel">
-                    <div class="chart-wrapper" id="scatter-chart-container">
-                        <div class="chart-placeholder">
-                            <div class="chart-placeholder-icon">🔵</div>
-                            <div class="chart-placeholder-text">Memuat scatter plot korelasi...</div>
-                        </div>
-                        <canvas id="scatterChart"></canvas>
-                    </div>
-                    <div class="chart-caption">
-                        Korelasi Biaya SMA vs Partisipasi Sekolah 16–18 Tahun per Provinsi
-                        <br><small>💡 Arahkan kursor ke titik untuk melihat detail provinsi</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================= -->
-<!-- SECTION 5: KORELASI PROTEIN VS STUNTING -->
-<!-- ============================================= -->
-<section class="scrolly-section data-section alt-bg" id="section-5">
-  <div class="container">
-    <div class="content-layout">
-      <div class="chart-panel">
-
-        <div class="chart-wrapper" id="protein-chart-container">
-
-          <!-- Tab buttons -->
-          <div id="protein-tabs" style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;"></div>
-
-          <!-- Canvas area + korelasi box -->
-          <div style="position:relative; width:100%; height:420px;">
-            <canvas id="proteinChart"></canvas>
-            <div id="protein-corr-box"></div>
-          </div>
-
-          <!-- Legend bawah -->
-          <div id="protein-legend">
-            <div class="protein-legend-left">
-              <span class="legend-dot-item">
-                <span class="legend-dot"></span>Satu titik = satu provinsi
-              </span>
-              <span class="legend-line-item">
-                <span class="legend-dash"></span>Garis regresi linear
-              </span>
-            </div>
-            <span class="legend-source">Sumber: BPS / Susenas</span>
-          </div>
-
-          <!-- Highlight legend -->
-          <div id="protein-hl-legend">
-            <span class="hl-item" style="color:#E71D36;">
-              <span class="hl-dot" style="background:#E71D36;"></span>Papua Pegunungan
-            </span>
-            <span class="hl-item" style="color:#8B4513;">
-              <span class="hl-dot" style="background:#8B4513;"></span>Bali
-            </span>
-            <span class="hl-item" style="color:#A78BFA;">
-              <span class="hl-dot" style="background:#A78BFA;"></span>DKI Jakarta
-            </span>
-          </div>
-
-        </div>
-
-        <div class="chart-caption">
-          Korelasi Asupan Protein vs Prevalensi Stunting per Jenjang
-          <br><small>💡 Arahkan kursor ke titik untuk melihat detail provinsi</small>
-        </div>
-
-      </div>
-      <div class="narasi-panel">
-        <div class="section-number">04</div>
-        <h3 class="section-title">Protein Rendah, Stunting Tinggi</h3>
-        <div class="narasi-body">
-          <p>
-            <span class="highlight">Provinsi dengan asupan protein rendah cenderung memiliki
-            prevalensi stunting yang lebih tinggi</span> — pola ini konsisten
-            di ketiga jenjang usia.
-          </p>
-          <p>
-            Papua Pegunungan mencatat angka stunting SMA tertinggi
-            (<strong>40.5%</strong>) sekaligus asupan protein terendah.
-            Sebaliknya, <span class="highlight">Bali dan DKI Jakarta
-            menikmati protein cukup dan stunting rendah</span>.
-          </p>
-          <p>
-            Korelasi negatif ini menegaskan bahwa intervensi gizi —
-            bukan hanya akses sekolah — adalah kunci memutus
-            rantai stunting antargenerasi.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-    <!-- ============================================= -->
-    <!-- SECTION 6: MBG SEBAGAI SOLUSI -->
-    <!-- ============================================= -->
-    <section class="scrolly-section mbg-section" id="section-5" data-section="4">
-        <div class="container">
-            <div class="mbg-content">
-                <div class="section-number large">
-                    <span>04</span>
-                    <div class="section-number-glow"></div>
-                </div>
-                <h3 class="section-title">
-                    Makan Bergizi Gratis (MBG):<br>Investasi atau Beban?
-                </h3>
-                <div class="narasi-body centered">
-                    <p>
-                        Program MBG digadang-gadang sebagai solusi meningkatkan 
-                        konsentrasi dan partisipasi siswa. Namun, anggarannya 
-                        mencapai <strong>Rp400 triliun per tahun</strong> — 
-                        setara dengan membangun <span class="highlight">ribuan sekolah baru</span> 
-                        di daerah tertinggal.
-                    </p>
-                    <p>
-                        Di <strong>Papua Pegunungan</strong>, di mana 
-                        <span class="text-emphasis">50,79% remaja tidak bersekolah</span> 
-                        dan biaya SD hanya Rp1,6 juta per tahun, 
-                        manakah yang lebih dibutuhkan: 
-                        <em>makan siang gratis</em> atau 
-                        <em>sekolah tanpa biaya?</em>
-                    </p>
-                </div>
-                
-                <div class="comparison-table">
-                    <div class="comparison-card pendidikan-card">
-                        <div class="card-accent"></div>
-                        <div class="card-header">
-                            <span class="card-icon">📚</span>
-                            <div>
-                                <h4>Pendidikan Gratis</h4>
-                                <span class="card-subtitle">Investasi Jangka Panjang</span>
-                            </div>
-                        </div>
-                        <ul class="card-list">
-                            <li>
-                                <span class="list-icon">✅</span>
-                                <span>Akses langsung ke sekolah tanpa hambatan biaya</span>
-                            </li>
-                            <li>
-                                <span class="list-icon">✅</span>
-                                <span>Kurangi angka putus sekolah secara signifikan</span>
-                            </li>
-                            <li>
-                                <span class="list-icon">✅</span>
-                                <span>Investasi SDM untuk 10–20 tahun ke depan</span>
-                            </li>
-                            <li class="list-item-negative">
-                                <span class="list-icon">❌</span>
-                                <span>Tidak langsung atasi masalah gizi & konsentrasi</span>
-                            </li>
-                            <li class="list-item-negative">
-                                <span class="list-icon">❌</span>
-                                <span>Butuh pembangunan infrastruktur masif</span>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="comparison-card mbg-card">
-                        <div class="card-accent"></div>
-                        <div class="card-header">
-                            <span class="card-icon">🍎</span>
-                            <div>
-                                <h4>Makan Bergizi Gratis</h4>
-                                <span class="card-subtitle">Dampak Langsung & Cepat</span>
-                            </div>
-                        </div>
-                        <ul class="card-list">
-                            <li>
-                                <span class="list-icon">✅</span>
-                                <span>Tingkatkan gizi & konsentrasi belajar siswa</span>
-                            </li>
-                            <li>
-                                <span class="list-icon">✅</span>
-                                <span>Kurangi beban ekonomi keluarga miskin</span>
-                            </li>
-                            <li>
-                                <span class="list-icon">✅</span>
-                                <span>Dorong ekonomi lokal melalui rantai pasok</span>
-                            </li>
-                            <li class="list-item-negative">
-                                <span class="list-icon">❌</span>
-                                <span>Tidak menjamin anak putus sekolah kembali</span>
-                            </li>
-                            <li class="list-item-negative">
-                                <span class="list-icon">❌</span>
-                                <span>Biaya operasional berkelanjutan sangat besar</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================= -->
-    <!-- SECTION 6: RATA-RATA LAMA SEKOLAH -->
-    <!-- ============================================= -->
-    <section class="scrolly-section data-section alt-bg" id="section-6" data-section="5">
-        <div class="container">
-            <div class="content-layout reverse">
-                <div class="chart-panel">
-                    <div class="chart-wrapper map-wrapper" id="rls-map-container">
-                        <div class="chart-placeholder">
-                            <div class="chart-placeholder-icon">🗺️</div>
-                            <div class="chart-placeholder-text">Memuat peta RLS Indonesia...</div>
-                        </div>
-                        <canvas id="rlsMapChart"></canvas>
-                    </div>
-                    <div class="chart-caption">
-                        Rata-rata Lama Sekolah per Provinsi (Tahun)
-                        <br><small>Warna lebih gelap = RLS lebih tinggi | Data: BPS 2023</small>
-                    </div>
-                </div>
-                <div class="narasi-panel">
-                    <div class="section-number">
-                        <span class="section-num-text">05</span>
-                        <span class="section-num-label">Ketimpangan</span>
-                    </div>
-                    <h3 class="section-title">
-                        Rata-rata Lama Sekolah:<br>Potret Ketimpangan Akut
-                    </h3>
-                    <div class="narasi-body">
-                        <p>
-                            <span class="highlight">Anak di Papua Pegunungan rata-rata hanya sekolah 4,3 tahun</span> 
-                            — setara tidak lulus Sekolah Dasar. Bandingkan dengan 
-                            <strong>DKI Jakarta</strong> yang mencapai 11,59 tahun 
-                            (lulus SMA). <span class="text-emphasis">Kesenjangan 7,29 tahun</span> 
-                            ini adalah jurang terbesar di Indonesia.
-                        </p>
-                        <p>
-                            Ironisnya, biaya pendidikan di Papua Pegunungan justru termasuk 
-                            yang termurah (SD hanya Rp1,6 juta/tahun). Artinya, 
-                            <strong>masalahnya bukan semata biaya</strong>, melainkan 
-                            <em>kemiskinan struktural, akses transportasi, dan kebutuhan 
-                            dasar yang belum terpenuhi</em>.
-                        </p>
-                        <div class="insight-box warning">
-                            <div class="insight-icon">⚠️</div>
-                            <div class="insight-text">
-                                <strong>Realita Pahit:</strong> Anak yang lapar tidak bisa 
-                                fokus belajar. Tapi anak yang tidak sekolah tidak akan 
-                                mendapatkan ilmu. <em>Mana yang lebih dulu diperbaiki?</em>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ============================================= -->
-    <!-- SECTION 7: KESIMPULAN -->
-    <!-- ============================================= -->
-    <section class="scrolly-section conclusion-section" id="section-7" data-section="6">
-        <div class="container">
-            <div class="conclusion-content">
-                <div class="section-number large">
-                    <span>✦</span>
-                    <div class="section-number-glow"></div>
-                </div>
-                <h3 class="section-title conclusion-title">
-                    Tidak Ada Jawaban Tunggal<br>untuk Indonesia
-                </h3>
-                <div class="narasi-body centered">
-                    <p class="conclusion-lead">
-                        Data dari <strong>38 provinsi</strong> menunjukkan bahwa 
-                        <span class="highlight">pendidikan gratis tanpa perbaikan gizi 
-                        tidak akan efektif</span>. Sebaliknya, MBG tanpa akses sekolah 
-                        hanyalah solusi jangka pendek yang tidak menyelesaikan akar masalah.
-                    </p>
-                </div>
-                
-                <div class="conclusion-verdict">
-                    <div class="verdict-icon">🎯</div>
-                    <p>
-                        <strong>Jawabannya adalah sinergi:</strong> program MBG 
-                        harus berjalan bersama dengan subsidi biaya pendidikan 
-                        di daerah tertinggal. Provinsi seperti 
-                        <span class="highlight">Papua Pegunungan, Papua Tengah, dan Nusa Tenggara Timur</span> 
-                        membutuhkan keduanya secara bersamaan — 
-                        <em>perut kenyang dan akses sekolah tanpa biaya</em>.
-                    </p>
-                </div>
-                
-                <div class="final-stats">
-                    <div class="final-stat-item">
-                        <span class="final-number">38</span>
-                        <span class="final-label">Provinsi Dianalisis</span>
-                        <span class="final-sub">Data BPS & Susenas 2023</span>
-                    </div>
-                    <div class="final-stat-item">
-                        <span class="final-number">7,29</span>
-                        <span class="final-label">Tahun Kesenjangan RLS</span>
-                        <span class="final-sub">Jakarta vs Papua Pegunungan</span>
-                    </div>
-                    <div class="final-stat-item">
-                        <span class="final-number">55,39%</span>
-                        <span class="final-label">Putus Sekolah Tertinggi</span>
-                        <span class="final-sub">Papua Tengah (16-18 thn)</span>
-                    </div>
-                </div>
-                
-                <div class="call-to-action">
-                    <div class="cta-icon">🗣️</div>
-                    <p>
-                        Kebijakan yang tepat sasaran harus <strong>berbasis data</strong>, 
-                        bukan sekadar janji politik. <em>Mana yang lebih penting?</em> 
-                        <strong>Tergantung di mana anak Indonesia itu tinggal.</strong>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================= -->
-    <!-- FOOTER -->
-    <!-- ============================================= -->
-    <footer class="site-footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <span class="footer-logo">📚 Edu<span>vs</span>Gizi 🍎</span>
-                    <p>Proyek Eksplorasi Data untuk Mata Kuliah Visualisasi Data</p>
-                </div>
-                <div class="footer-info">
-                    <div class="footer-section">
-                        <h5>Sumber Data</h5>
-                        <ul>
-                            <li>BPS — Susenas 2023</li>
-                            <li>Kemendikbudristek</li>
-                            <li>Kementerian Kesehatan RI</li>
-                            <li>Bappenas — Program MBG</li>
-                        </ul>
-                    </div>
-                    <div class="footer-section">
-                        <h5>Tim Penyusun</h5>
-                        <ul>
-                            <li>Orang 1 — Data Architect</li>
-                            <li>Orang 2 — D3 Wizard</li>
-                            <li>Orang 3 — Scrolly Master</li>
-                            <li>Orang 4 — Content & UI</li>
-                            <li>Orang 5 — GitHub Manager</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2024 Edu vs Gizi — Dibuat untuk Keperluan Akademik. Semua data bersumber dari lembaga resmi pemerintah Indonesia.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- ============================================= -->
-    <!-- SCROLL TO TOP BUTTON -->
-    <!-- ============================================= -->
-    <button class="scroll-to-top" id="scrollToTop" aria-label="Kembali ke atas">
-        <span>↑</span>
-    </button>
-
-    <!-- Scripts -->
+    <!-- Scrollama -->
     <script src="https://unpkg.com/scrollama"></script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="js/korelasi.js"></script>
-    <script src="js/chart.js"></script>
+
+    <!-- User stylesheet -->
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+    <!-- ========================================================
+       SECTION 0 — COVER
+  ======================================================== -->
+    <section class="section section--cover" id="cover">
+        <div class="container">
+            <div class="cover__label">Analisis Kebijakan Publik</div>
+            <h1 class="cover__title">
+                Makan Siang Gratis<br />
+                <span class="cover__title-vs">atau</span><br />
+                Pendidikan Gratis
+            </h1>
+            <p class="cover__subtitle">Mana yang Lebih Penting?</p>
+            <div class="cover__scroll-hint">
+                <span>Gulir ke bawah</span>
+                <div class="cover__scroll-arrow"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================
+       SECTION 1 — STUNTING & GIZI
+  ======================================================== -->
+    <section class="section section--data" id="stunting">
+        <div class="container">
+
+            <!-- 1A — STUNTING -->
+            <div class="scrolly-step" data-step="stunting-stat">
+                <div class="layout layout--split">
+
+                    <div class="layout__stat">
+                        <div class="stat-block" id="stunting-number">
+                            <span class="stat-block__value"><!-- diisi JS --></span>
+                            <span class="stat-block__unit">%</span>
+                        </div>
+                        <div class="stat-block__label">Prevalensi Stunting</div>
+                    </div>
+
+                    <div class="layout__narasi">
+                        <div class="section-index">01</div>
+                        <h2 class="section-heading">Anak Indonesia Masih Stunting</h2>
+                        <div class="narasi">
+                            <p>
+                                Satu dari lima anak Indonesia tumbuh dalam kondisi stunting —
+                                gagal tumbuh akibat kekurangan gizi kronis sejak dini.
+                                Stunting bukan sekadar soal tinggi badan; ia menghambat
+                                perkembangan kognitif, menurunkan kapasitas belajar, dan
+                                memangkas produktivitas seumur hidup.
+                            </p>
+                            <p>
+                                Ini adalah akar masalah yang harus dibaca sebelum kita
+                                berdebat soal program mana yang lebih mendesak.
+                            </p>
+                        </div>
+                        <!-- Chart: Bar chart prevalensi stunting per provinsi -->
+                        <div class="chart-wrapper" id="chart-stunting">
+                            <canvas id="canvas-stunting"></canvas>
+                            <p class="chart-caption">Prevalensi Stunting per Provinsi (%)</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 1B — GIZI-Konsumsi Protein & Kalori -->
+            <div class="scrolly-step" data-step="gizi-stat">
+                <div class="layout layout--split layout--reversed">
+
+                    <div class="layout__narasi">
+                        <div class="section-index">02</div>
+                        <h2 class="section-heading">Konsumsi Protein dan Kalori yang Timpang</h2>
+                        <div class="narasi">
+                            <p>
+                                Rata-rata konsumsi kalori dan protein anak sekolah di
+                                daerah tertinggal berada jauh di bawah angka kecukupan
+                                gizi nasional. Anak yang lapar tidak bisa fokus belajar —
+                                ini fakta fisiologis, bukan retorika.
+                            </p>
+                            <p>
+                                Program Makan Bergizi Gratis (MBG) lahir dari realita ini.
+                                Tapi apakah ia menjawab akar masalahnya?
+                            </p>
+                        </div>
+                        <!-- Chart: Bar chart konsumsi protein/kalori -->
+                        <div class="chart-wrapper" id="chart-gizi">
+                            <canvas id="canvas-gizi"></canvas>
+                            <p class="chart-caption">Rata-rata Asupan Kalori dan Protein Anak Sekolah</p>
+                        </div>
+                    </div>
+
+                    <div class="layout__stat">
+                        <div class="stat-block" id="gizi-number">
+                            <span class="stat-block__value"><!-- diisi JS --></span>
+                            <span class="stat-block__unit">%</span>
+                        </div>
+                        <div class="stat-block__label">Anak Kurang Konsumsi Protein Harian</div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========================================================
+       SECTION 2 — DATA PENDIDIKAN
+  ======================================================== -->
+    <section class="section section--data section--alt" id="pendidikan">
+        <div class="container">
+
+            <!-- 2A — RLS -->
+            <div class="scrolly-step" data-step="rls-stat">
+                <div class="layout layout--split">
+
+                    <div class="layout__stat">
+                        <div class="stat-block" id="rls-number">
+                            <span class="stat-block__value"><!-- diisi JS --></span>
+                            <span class="stat-block__unit">thn</span>
+                        </div>
+                        <div class="stat-block__label">Rata-rata Lama Sekolah Terendah</div>
+                        <div class="stat-block__detail">Papua Pegunungan</div>
+                    </div>
+
+                    <div class="layout__narasi">
+                        <div class="section-index">03</div>
+                        <h2 class="section-heading">Rata-rata Lama Sekolah</h2>
+                        <div class="narasi">
+                            <p>
+                                Anak di Papua Pegunungan rata-rata hanya mengenyam pendidikan
+                                selama 4,3 tahun — tidak sampai lulus SD. Sementara anak
+                                di DKI Jakarta meraih 11,59 tahun. Kesenjangan 7,29 tahun
+                                ini mencerminkan ketimpangan sistemik yang jauh melampaui
+                                sekadar soal biaya sekolah.
+                            </p>
+                            <p>
+                                Kemiskinan, jarak geografis, dan kebutuhan dasar yang belum
+                                terpenuhi menjadi hambatan nyata yang tidak bisa diselesaikan
+                                hanya dengan menggratiskan SPP.
+                            </p>
+                        </div>
+                        <!-- Chart: Bar horizontal RLS per provinsi -->
+                        <div class="chart-wrapper" id="chart-rls">
+                            <canvas id="canvas-rls"></canvas>
+                            <p class="chart-caption">Rata-rata Lama Sekolah per Provinsi (Tahun)</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 2B — APS -->
+            <div class="scrolly-step" data-step="aps-stat">
+                <div class="layout layout--split layout--reversed">
+
+                    <div class="layout__narasi">
+                        <div class="section-index">04</div>
+                        <h2 class="section-heading">Angka Partisipasi Sekolah</h2>
+                        <div class="narasi">
+                            <p>
+                                Papua Tengah menjadi provinsi paling kritis: hanya
+                                <strong>44,61%</strong> remaja usia 16–18 tahun yang masih
+                                bersekolah. Lebih dari separuh dari mereka sudah putus sekolah
+                                sebelum menyentuh bangku SMA.
+                            </p>
+                            <p>
+                                Banten, dengan biaya SMP mencapai Rp9,6 juta, justru mencatatkan
+                                partisipasi hanya 73,84%. Biaya tinggi tidak otomatis berarti
+                                akses yang lebih luas.
+                            </p>
+                            <div class="compare-pair">
+                                <div class="compare-pair__item compare-pair__item--low">
+                                    <span class="compare-pair__value">44,61%</span>
+                                    <span class="compare-pair__label">Papua Tengah</span>
+                                </div>
+                                <div class="compare-pair__divider">vs</div>
+                                <div class="compare-pair__item compare-pair__item--high">
+                                    <span class="compare-pair__value">93,03%</span>
+                                    <span class="compare-pair__label">DIY Yogyakarta</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Chart: Bar APS 16-18 per provinsi -->
+                        <div class="chart-wrapper" id="chart-aps">
+                            <canvas id="canvas-aps"></canvas>
+                            <p class="chart-caption">Angka Partisipasi Sekolah Usia 16–18 Tahun (%)</p>
+                        </div>
+                    </div>
+
+                    <div class="layout__stat">
+                        <div class="stat-block" id="aps-number">
+                            <span class="stat-block__value"><!-- diisi JS --></span>
+                            <span class="stat-block__unit">%</span>
+                        </div>
+                        <div class="stat-block__label">APS Usia 16–18 Terendah</div>
+                        <div class="stat-block__detail">Papua Selatan</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 2C — Rata" Biaya Sekolah -->
+            <div class="scrolly-step" data-step="biaya-stat">
+                <div class="layout layout--split">
+
+                    <div class="layout__stat">
+                        <div class="stat-block" id="biaya-number">
+                            <span class="stat-block__value"><!-- diisi JS --></span>
+                            <span class="stat-block__unit">jt</span>
+                        </div>
+                        <div class="stat-block__label">Biaya SMA Tertinggi per Tahun</div>
+                        <div class="stat-block__detail">Papua — Rp17,91 juta</div>
+                    </div>
+
+                    <div class="layout__narasi">
+                        <div class="section-index">05</div>
+                        <h2 class="section-heading">Biaya Sekolah yang Mencekik</h2>
+                        <div class="narasi">
+                            <p>
+                                Biaya pendidikan antarprovinsi sangat timpang. Di Papua,
+                                biaya SMA bisa mencapai Rp17,91 juta per tahun, sementara
+                                di Maluku hanya Rp4,99 juta. Paradoksnya,
+                                Sumatera Selatan dengan biaya SMA Rp14,6 juta justru
+                                mencatat partisipasi lebih rendah daripada Maluku.
+                            </p>
+                            <p>
+                                Biaya tinggi tanpa daya beli yang memadai hanya memperlebar
+                                jurang ketimpangan, bukan memperluas akses.
+                            </p>
+                        </div>
+                        <!-- Chart: Bar grouped biaya SD/SMP/SMA per provinsi -->
+                        <div class="chart-wrapper" id="chart-biaya">
+                            <canvas id="canvas-biaya"></canvas>
+                            <p class="chart-caption">Rata-rata Biaya Pendidikan per Jenjang (Juta Rupiah)</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========================================================
+       SECTION 3 — PETA PERSEBARAN SPPG + Sekolah
+  ======================================================== -->
+    <section class="section section--map" id="peta">
+        <div class="container">
+
+            <!-- 3A — Peta SPPG -->
+            <div class="scrolly-step" data-step="peta-mbg">
+                <div class="section-index">06</div>
+                <h2 class="section-heading">Persebaran Program MBG di Indonesia</h2>
+                <div class="narasi narasi--center">
+                    <p>
+                        Seberapa merata program Makan Bergizi Gratis menjangkau
+                        wilayah dengan angka stunting dan gizi tertinggi?
+                        Peta berikut memperlihatkan distribusi program MBG di
+                        seluruh Indonesia berdasarkan jumlah SPPG.
+                    </p>
+                </div>
+                <!-- Map: Choropleth/bubble map MBG coverage -->
+                <div class="map-wrapper" id="map-mbg">
+                    <!-- map diinject di sini -->
+                    <div class="map-placeholder">
+                        <span>Peta Persebaran SPPG</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3B — Peta Sekolah -->
+            <div class="scrolly-step" data-step="peta-sekolah">
+                <div class="section-index">07</div>
+                <h2 class="section-heading">Persebaran Sekolah di Indonesia</h2>
+                <div class="narasi narasi--center">
+                    <p>
+                        Bandingkan distribusi sekolah dengan sebaran program MBG —
+                        apakah keduanya menjangkau wilayah yang sama?
+                    </p>
+                </div>
+                <!-- Map: Choropleth/bubble map distribusi sekolah -->
+                <div class="map-wrapper" id="map-sekolah">
+                    <!-- map diinject di sini -->
+                    <div class="map-placeholder">
+                        <span>Peta Persebaran Sekolah</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========================================================
+       SECTION 4 — KORELASI
+  ======================================================== -->
+    <section class="section section--data" id="korelasi">
+        <div class="container">
+
+            <!-- 4A — Akses Gizi vs RLS -->
+            <div class="scrolly-step" data-step="korelasi-gizi-rls">
+                <div class="layout layout--split">
+                    <div class="layout__narasi">
+                        <div class="section-index">08</div>
+                        <h2 class="section-heading">Gizi yang Lebih Baik, Sekolah Lebih Lama?</h2>
+                        <div class="narasi">
+                            <p>
+                                Provinsi dengan akses gizi yang lebih baik cenderung
+                                mencatatkan rata-rata lama sekolah yang lebih tinggi.
+                                Korelasi ini bukan sebab-akibat langsung, namun
+                                menunjukkan bahwa keduanya bergerak bersama sebagai
+                                cerminan kondisi kesejahteraan suatu daerah.
+                            </p>
+                            <p>
+                                Anak yang tumbuh sehat memiliki kapasitas kognitif yang
+                                lebih baik — dan itu tercermin dalam lamanya mereka
+                                bertahan di bangku sekolah.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Chart: Scatter plot Akses Gizi vs RLS -->
+                    <div class="chart-wrapper" id="chart-korelasi-gizi-rls">
+                        <canvas id="canvas-korelasi-gizi-rls"></canvas>
+                        <p class="chart-caption">Korelasi Akses Gizi vs Rata-rata Lama Sekolah</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4B — Anggaran vs Gizi -->
+            <div class="scrolly-step" data-step="korelasi-anggaran-gizi">
+                <div class="layout layout--split layout--reversed">
+                    <!-- Chart: Scatter plot Anggaran vs Gizi -->
+                    <div class="chart-wrapper" id="chart-korelasi-anggaran-gizi">
+                        <canvas id="canvas-korelasi-anggaran-gizi"></canvas>
+                        <p class="chart-caption">Korelasi Anggaran Daerah vs Akses Gizi</p>
+                    </div>
+                    <div class="layout__narasi">
+                        <div class="section-index">09</div>
+                        <h2 class="section-heading">Anggaran Lebih Besar, Gizi Lebih Baik?</h2>
+                        <div class="narasi">
+                            <p>
+                                Apakah daerah dengan anggaran pendidikan dan kesehatan
+                                yang lebih besar berhasil meningkatkan akses gizi anak-anaknya?
+                                Scatter plot ini mengungkap seberapa kuat — atau lemah —
+                                hubungan tersebut di antara 38 provinsi.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4C — Anggaran vs RLS -->
+            <div class="scrolly-step" data-step="korelasi-anggaran-rls">
+                <div class="layout layout--split">
+                    <div class="layout__narasi">
+                        <div class="section-index">10</div>
+                        <h2 class="section-heading">Anggaran yang Lebih Besar, Pendidikan yang Lebih Lama?</h2>
+                        <div class="narasi">
+                            <p>
+                                Pertanyaan yang sama berlaku untuk pendidikan. Apakah
+                                daerah yang mengalokasikan lebih banyak anggaran
+                                benar-benar menghasilkan rata-rata lama sekolah yang
+                                lebih tinggi? Atau ada faktor lain yang lebih menentukan?
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Chart: Scatter plot Anggaran vs RLS -->
+                    <div class="chart-wrapper" id="chart-korelasi-anggaran-rls">
+                        <canvas id="canvas-korelasi-anggaran-rls"></canvas>
+                        <p class="chart-caption">Korelasi Anggaran Daerah vs Rata-rata Lama Sekolah</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========================================================
+       SECTION 5 — PERBANDINGAN ANGGARAN & TARGET
+       PDF Hal. 7: Target Gizi vs Kenaikan RLS,
+                   Anggaran MBG vs Anggaran Pendidikan
+  ======================================================== -->
+    <section class="section section--data section--alt" id="anggaran">
+        <div class="container">
+
+            <div class="scrolly-step" data-step="anggaran-komparasi">
+                <div class="section-index">11</div>
+                <h2 class="section-heading section-heading--center">
+                    Mana yang Lebih Efisien: MBG atau Pendidikan?
+                </h2>
+                <div class="narasi narasi--center">
+                    <p>
+                        Program MBG dianggarkan senilai Rp400 triliun per tahun.
+                        Anggaran pendidikan nasional dialokasikan sebesar 20% dari APBN.
+                        Pertanyaannya: per rupiah yang dikeluarkan, program mana
+                        yang menghasilkan dampak lebih besar pada kualitas hidup anak?
+                    </p>
+                </div>
+
+                <div class="vs-layout">
+
+                    <!-- Sisi MBG -->
+                    <div class="vs-card vs-card--mbg">
+                        <div class="vs-card__icon">MBG</div>
+                        <div class="vs-card__stat" id="stat-target-gizi">
+                            <span class="stat-block__value"><!-- diisi JS --></span>
+                        </div>
+                        <div class="vs-card__label">Target Pemenuhan Gizi Anak</div>
+                        <!-- Chart: Progress atau bar anggaran MBG -->
+                        <div class="chart-wrapper" id="chart-anggaran-mbg">
+                            <canvas id="canvas-anggaran-mbg"></canvas>
+                            <p class="chart-caption">Anggaran MBG (Triliun Rupiah)</p>
+                        </div>
+                        <div class="vs-card__narasi">
+                            <p>
+                                MBG menjangkau jutaan siswa setiap hari, langsung
+                                mengatasi masalah gizi jangka pendek. Namun tanpa
+                                akses sekolah yang memadai, efeknya berhenti di sana.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="vs-divider">vs</div>
+
+                    <!-- Sisi Pendidikan -->
+                    <div class="vs-card vs-card--pendidikan">
+                        <div class="vs-card__icon">DIKTI</div>
+                        <div class="vs-card__stat" id="stat-target-rls">
+                            <span class="stat-block__value"><!-- diisi JS --></span>
+                        </div>
+                        <div class="vs-card__label">Target Kenaikan Rata-rata Lama Sekolah</div>
+                        <!-- Chart: Progress atau bar anggaran pendidikan -->
+                        <div class="chart-wrapper" id="chart-anggaran-pendidikan">
+                            <canvas id="canvas-anggaran-pendidikan"></canvas>
+                            <p class="chart-caption">Anggaran Pendidikan (Triliun Rupiah)</p>
+                        </div>
+                        <div class="vs-card__narasi">
+                            <p>
+                                Investasi pendidikan bekerja dalam jangka panjang.
+                                Hasilnya tidak terasa dalam satu tahun anggaran,
+                                namun berdampak pada generasi secara keseluruhan.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================
+       SECTION 6 — KESIMPULAN
+  ======================================================== -->
+    <section class="section section--conclusion" id="kesimpulan">
+        <div class="container">
+
+            <div class="conclusion">
+                <div class="section-index">&#x2726;</div>
+                <h2 class="conclusion__heading">Tidak Ada Jawaban Tunggal</h2>
+                <div class="conclusion__body">
+                    <p class="conclusion__lead">
+                        Data dari 38 provinsi menunjukkan bahwa pendidikan gratis tanpa
+                        perbaikan gizi tidak akan efektif. Sebaliknya, program MBG tanpa
+                        akses sekolah yang nyata hanya menjadi solusi jangka pendek.
+                    </p>
+                    <p>
+                        Daerah-daerah seperti Papua Pegunungan dan Papua Tengah
+                        membutuhkan keduanya secara bersamaan: perut yang cukup terisi
+                        dan sekolah yang benar-benar bisa dijangkau tanpa beban biaya.
+                        Kebijakan yang tidak membaca konteks lokal hanya akan
+                        memperbesar kesenjangan yang sudah ada.
+                    </p>
+                    <blockquote class="conclusion__quote">
+                        Kebijakan yang tepat sasaran harus berbasis data —
+                        bukan asumsi bahwa satu solusi berlaku untuk semua.
+                    </blockquote>
+                </div>
+
+                <!-- Ringkasan angka kunci -->
+                <div class="conclusion__stats">
+                    <div class="conclusion__stat-item">
+                        <span class="conclusion__stat-value">38</span>
+                        <span class="conclusion__stat-label">Provinsi dianalisis</span>
+                    </div>
+                    <div class="conclusion__stat-item">
+                        <span class="conclusion__stat-value">4,30</span>
+                        <span class="conclusion__stat-label">Tahun RLS terendah (Papua Pegunungan)</span>
+                    </div>
+                    <div class="conclusion__stat-item">
+                        <span class="conclusion__stat-value">44,61%</span>
+                        <span class="conclusion__stat-label">APS 16–18 terendah (Papua Tengah)</span>
+                    </div>
+                    <div class="conclusion__stat-item">
+                        <span class="conclusion__stat-value">Rp400 T</span>
+                        <span class="conclusion__stat-label">Anggaran MBG per tahun</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========================================================
+       SCRIPTS
+  ======================================================== -->
+    <script src="js/charts/stunting.js"></script>
+    <script src="js/charts/gizi.js"></script>
+    <script src="js/charts/rls.js"></script>
+    <script src="js/charts/aps.js"></script>
+    <script src="js/charts/biaya.js"></script>
+    <script src="js/charts/peta.js"></script>
+    <script src="js/charts/korelasi.js"></script>
+    <script src="js/charts/anggaran.js"></script>
     <script src="js/main.js"></script>
-    
-    <!-- Inline Script untuk Loading Screen & Interaktivitas Dasar -->
-    <script>
-        // Loading Screen
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                const loadingScreen = document.getElementById('loadingScreen');
-                loadingScreen.classList.add('fade-out');
-                setTimeout(function() {
-                    loadingScreen.style.display = 'none';
-                }, 500);
-            }, 1500);
-        });
 
-        // Progress Bar
-        window.addEventListener('scroll', function() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = (scrollTop / scrollHeight) * 100;
-            document.getElementById('progressBar').style.width = scrollPercent + '%';
-        });
-
-        // Scroll to Top Button
-        const scrollToTopBtn = document.getElementById('scrollToTop');
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 800) {
-                scrollToTopBtn.classList.add('visible');
-            } else {
-                scrollToTopBtn.classList.remove('visible');
-            }
-        });
-        scrollToTopBtn.addEventListener('click', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // Nav Dots Click Handler
-        document.querySelectorAll('.nav-dot').forEach(dot => {
-            dot.addEventListener('click', function() {
-                const sectionIndex = this.getAttribute('data-section');
-                const targetSection = document.querySelector(`[data-section="${sectionIndex}"]`);
-                if (targetSection) {
-                    targetSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-
-        // Nav Scroll Effect
-        window.addEventListener('scroll', function() {
-            const nav = document.getElementById('siteNav');
-            if (window.pageYOffset > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-            
-            // Highlight active nav dot
-            const sections = document.querySelectorAll('[data-section]');
-            let currentSection = 0;
-            sections.forEach((section, index) => {
-                const rect = section.getBoundingClientRect();
-                if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
-                    currentSection = index;
-                }
-            });
-            
-            document.querySelectorAll('.nav-dot').forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentSection);
-            });
-        });
-    </script>
 </body>
 </html>
