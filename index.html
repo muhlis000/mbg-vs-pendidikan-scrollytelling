@@ -293,7 +293,86 @@
     </section>
 
     <!-- ============================================= -->
-    <!-- SECTION 5: MBG SEBAGAI SOLUSI -->
+<!-- SECTION 5: KORELASI PROTEIN VS STUNTING -->
+<!-- ============================================= -->
+<section class="scrolly-section data-section alt-bg" id="section-5">
+  <div class="container">
+    <div class="content-layout">
+      <div class="chart-panel">
+
+        <div class="chart-wrapper" id="protein-chart-container">
+
+          <!-- Tab buttons -->
+          <div id="protein-tabs" style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;"></div>
+
+          <!-- Canvas area + korelasi box -->
+          <div style="position:relative; width:100%; height:420px;">
+            <canvas id="proteinChart"></canvas>
+            <div id="protein-corr-box"></div>
+          </div>
+
+          <!-- Legend bawah -->
+          <div id="protein-legend">
+            <div class="protein-legend-left">
+              <span class="legend-dot-item">
+                <span class="legend-dot"></span>Satu titik = satu provinsi
+              </span>
+              <span class="legend-line-item">
+                <span class="legend-dash"></span>Garis regresi linear
+              </span>
+            </div>
+            <span class="legend-source">Sumber: BPS / Susenas</span>
+          </div>
+
+          <!-- Highlight legend -->
+          <div id="protein-hl-legend">
+            <span class="hl-item" style="color:#E71D36;">
+              <span class="hl-dot" style="background:#E71D36;"></span>Papua Pegunungan
+            </span>
+            <span class="hl-item" style="color:#8B4513;">
+              <span class="hl-dot" style="background:#8B4513;"></span>Bali
+            </span>
+            <span class="hl-item" style="color:#A78BFA;">
+              <span class="hl-dot" style="background:#A78BFA;"></span>DKI Jakarta
+            </span>
+          </div>
+
+        </div>
+
+        <div class="chart-caption">
+          Korelasi Asupan Protein vs Prevalensi Stunting per Jenjang
+          <br><small>💡 Arahkan kursor ke titik untuk melihat detail provinsi</small>
+        </div>
+
+      </div>
+      <div class="narasi-panel">
+        <div class="section-number">04</div>
+        <h3 class="section-title">Protein Rendah, Stunting Tinggi</h3>
+        <div class="narasi-body">
+          <p>
+            <span class="highlight">Provinsi dengan asupan protein rendah cenderung memiliki
+            prevalensi stunting yang lebih tinggi</span> — pola ini konsisten
+            di ketiga jenjang usia.
+          </p>
+          <p>
+            Papua Pegunungan mencatat angka stunting SMA tertinggi
+            (<strong>40.5%</strong>) sekaligus asupan protein terendah.
+            Sebaliknya, <span class="highlight">Bali dan DKI Jakarta
+            menikmati protein cukup dan stunting rendah</span>.
+          </p>
+          <p>
+            Korelasi negatif ini menegaskan bahwa intervensi gizi —
+            bukan hanya akses sekolah — adalah kunci memutus
+            rantai stunting antargenerasi.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- ============================================= -->
+    <!-- SECTION 6: MBG SEBAGAI SOLUSI -->
     <!-- ============================================= -->
     <section class="scrolly-section mbg-section" id="section-5" data-section="4">
         <div class="container">
@@ -450,6 +529,7 @@
         </div>
     </section>
 
+
     <!-- ============================================= -->
     <!-- SECTION 7: KESIMPULAN -->
     <!-- ============================================= -->
@@ -561,6 +641,8 @@
 
     <!-- Scripts -->
     <script src="https://unpkg.com/scrollama"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="js/korelasi.js"></script>
     <script src="js/chart.js"></script>
     <script src="js/main.js"></script>
     
