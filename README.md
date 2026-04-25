@@ -2,14 +2,14 @@
 
 Web ScrollyTelling mengenai komparasi **Kebijakan Makan Bergizi Gratis (MBG)** dengan aspirasi masyarakat yang memilih dialihkan ke **Pendidikan Gratis**.
 
-## 🛠 Tech Stack
+## Tech Stack
 - D3.js  
 - Scrollama.js  
 - HTML/CSS  
 
 ---
 
-## 📊 Data Source
+## Data Source
 
 Biaya MBG. (2026). *Ticker MBG*. Retrieved April 25, 2026, from https://biayambg.vercel.app  
 
@@ -31,7 +31,7 @@ Badan Pusat Statistik. (2017). *Jumlah sekolah, guru, dan murid sekolah menengah
 
 ---
 
-## 👥 Anggota, Peran, dan Tugas Spesifik
+## Anggota, Peran, dan Tugas Spesifik
 
 | Nama           | Peran          | Tugas Spesifik                                                                 |
 |----------------|----------------|--------------------------------------------------------------------------------|
