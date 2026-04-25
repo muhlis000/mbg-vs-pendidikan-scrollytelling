@@ -1,4 +1,4 @@
-# mbg-vs-pendidikan-scrollytelling
+# Web Story MBG vs Pendidikan
 
 Web ScrollyTelling mengenai komparasi **Kebijakan Makan Bergizi Gratis (MBG)** dengan aspirasi masyarakat yang memilih dialihkan ke **Pendidikan Gratis**.
 
