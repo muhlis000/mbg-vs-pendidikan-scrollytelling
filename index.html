@@ -4,539 +4,184 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Makan Siang Gratis atau Pendidikan Gratis — Mana yang Lebih Penting?</title>
+    <title>Makan Siang Gratis vs Pendidikan Gratis</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet" />
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Scrollama -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/scrollama"></script>
 
-    <!-- User stylesheet -->
     <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
 
-    <!-- ========================================================
-       SECTION 0 — COVER
-  ======================================================== -->
-    <section class="section section--cover" id="cover">
-        <div class="container">
-            <div class="cover__label">Analisis Kebijakan Publik</div>
-            <h1 class="cover__title">
-                Makan Siang Gratis<br />
-                <span class="cover__title-vs">atau</span><br />
-                Pendidikan Gratis
-            </h1>
-            <p class="cover__subtitle">Mana yang Lebih Penting?</p>
-            <div class="cover__scroll-hint">
-                <span>Gulir ke bawah</span>
-                <div class="cover__scroll-arrow"></div>
+    <div class="progress-bar" id="progress-bar"></div>
+
+    <main id="scrolly">
+
+        <!-- Sticky chart container — semua visualisasi D3 render di sini -->
+        <section id="chart-container">
+            <div id="d3-visual-target"></div>
+            <div id="tooltip"></div>
+
+            <!-- Kontrol toggle kelompok usia, tampil hanya pada step stunting & APS -->
+            <div id="age-toggle" class="age-toggle hidden">
+                <button class="age-btn active" data-age="5-12">SD (5-12)</button>
+                <button class="age-btn" data-age="13-15">SMP (13-15)</button>
+                <button class="age-btn" data-age="16-18">SMA (16-18)</button>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ========================================================
-       SECTION 1 — STUNTING & GIZI
-  ======================================================== -->
-    <section class="section section--data" id="stunting">
-        <div class="container">
+        <article>
 
-            <!-- 1A — STUNTING -->
-            <div class="scrolly-step" data-step="stunting-stat">
-                <div class="layout layout--split">
+            <!-- COVER -->
+            <section class="step step--cover" data-step="cover">
+                <div class="cover-content">
+                    <span class="label-tag">Laporan Analisis Kebijakan</span>
+                    <h1 class="cover__title">
+                        <span class="makan-siang">Makan Siang</span><br />
+                        <span class="vs-word">atau</span><br />
+                        <span class="pendidikan">Pendidikan</span>
+                    </h1>
 
-                    <div class="layout__stat">
-                        <div class="stat-block" id="stunting-number">
-                            <span class="stat-block__value"><!-- diisi JS --></span>
-                            <span class="stat-block__unit">%</span>
-                        </div>
-                        <div class="stat-block__label">Prevalensi Stunting</div>
-                    </div>
-
-                    <div class="layout__narasi">
-                        <div class="section-index">01</div>
-                        <h2 class="section-heading">Anak Indonesia Masih Stunting</h2>
-                        <div class="narasi">
-                            <p>
-                                Satu dari lima anak Indonesia tumbuh dalam kondisi stunting —
-                                gagal tumbuh akibat kekurangan gizi kronis sejak dini.
-                                Stunting bukan sekadar soal tinggi badan; ia menghambat
-                                perkembangan kognitif, menurunkan kapasitas belajar, dan
-                                memangkas produktivitas seumur hidup.
-                            </p>
-                            <p>
-                                Ini adalah akar masalah yang harus dibaca sebelum kita
-                                berdebat soal program mana yang lebih mendesak.
-                            </p>
-                        </div>
-                        <!-- Chart: Bar chart prevalensi stunting per provinsi -->
-                        <div class="chart-wrapper" id="chart-stunting">
-                            <canvas id="canvas-stunting"></canvas>
-                            <p class="chart-caption">Prevalensi Stunting per Provinsi (%)</p>
-                        </div>
-                    </div>
-
+                    <p class="cover__subtitle">Mencari Prioritas di Tengah Ketimpangan Nasional</p>
+                    <div class="scroll-hint">Gulir untuk memulai narasi data</div>
                 </div>
-            </div>
+            </section>
 
-            <!-- 1B — GIZI-Konsumsi Protein & Kalori -->
-            <div class="scrolly-step" data-step="gizi-stat">
-                <div class="layout layout--split layout--reversed">
-
-                    <div class="layout__narasi">
-                        <div class="section-index">02</div>
-                        <h2 class="section-heading">Konsumsi Protein dan Kalori yang Timpang</h2>
-                        <div class="narasi">
-                            <p>
-                                Rata-rata konsumsi kalori dan protein anak sekolah di
-                                daerah tertinggal berada jauh di bawah angka kecukupan
-                                gizi nasional. Anak yang lapar tidak bisa fokus belajar —
-                                ini fakta fisiologis, bukan retorika.
-                            </p>
-                            <p>
-                                Program Makan Bergizi Gratis (MBG) lahir dari realita ini.
-                                Tapi apakah ia menjawab akar masalahnya?
-                            </p>
-                        </div>
-                        <!-- Chart: Bar chart konsumsi protein/kalori -->
-                        <div class="chart-wrapper" id="chart-gizi">
-                            <canvas id="canvas-gizi"></canvas>
-                            <p class="chart-caption">Rata-rata Asupan Kalori dan Protein Anak Sekolah</p>
-                        </div>
-                    </div>
-
-                    <div class="layout__stat">
-                        <div class="stat-block" id="gizi-number">
-                            <span class="stat-block__value"><!-- diisi JS --></span>
-                            <span class="stat-block__unit">%</span>
-                        </div>
-                        <div class="stat-block__label">Anak Kurang Konsumsi Protein Harian</div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ========================================================
-       SECTION 2 — DATA PENDIDIKAN
-  ======================================================== -->
-    <section class="section section--data section--alt" id="pendidikan">
-        <div class="container">
-
-            <!-- 2A — RLS -->
-            <div class="scrolly-step" data-step="rls-stat">
-                <div class="layout layout--split">
-
-                    <div class="layout__stat">
-                        <div class="stat-block" id="rls-number">
-                            <span class="stat-block__value"><!-- diisi JS --></span>
-                            <span class="stat-block__unit">thn</span>
-                        </div>
-                        <div class="stat-block__label">Rata-rata Lama Sekolah Terendah</div>
-                        <div class="stat-block__detail">Papua Pegunungan</div>
-                    </div>
-
-                    <div class="layout__narasi">
-                        <div class="section-index">03</div>
-                        <h2 class="section-heading">Rata-rata Lama Sekolah</h2>
-                        <div class="narasi">
-                            <p>
-                                Anak di Papua Pegunungan rata-rata hanya mengenyam pendidikan
-                                selama 4,3 tahun — tidak sampai lulus SD. Sementara anak
-                                di DKI Jakarta meraih 11,59 tahun. Kesenjangan 7,29 tahun
-                                ini mencerminkan ketimpangan sistemik yang jauh melampaui
-                                sekadar soal biaya sekolah.
-                            </p>
-                            <p>
-                                Kemiskinan, jarak geografis, dan kebutuhan dasar yang belum
-                                terpenuhi menjadi hambatan nyata yang tidak bisa diselesaikan
-                                hanya dengan menggratiskan SPP.
-                            </p>
-                        </div>
-                        <!-- Chart: Bar horizontal RLS per provinsi -->
-                        <div class="chart-wrapper" id="chart-rls">
-                            <canvas id="canvas-rls"></canvas>
-                            <p class="chart-caption">Rata-rata Lama Sekolah per Provinsi (Tahun)</p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- 2B — APS -->
-            <div class="scrolly-step" data-step="aps-stat">
-                <div class="layout layout--split layout--reversed">
-
-                    <div class="layout__narasi">
-                        <div class="section-index">04</div>
-                        <h2 class="section-heading">Angka Partisipasi Sekolah</h2>
-                        <div class="narasi">
-                            <p>
-                                Papua Tengah menjadi provinsi paling kritis: hanya
-                                <strong>44,61%</strong> remaja usia 16–18 tahun yang masih
-                                bersekolah. Lebih dari separuh dari mereka sudah putus sekolah
-                                sebelum menyentuh bangku SMA.
-                            </p>
-                            <p>
-                                Banten, dengan biaya SMP mencapai Rp9,6 juta, justru mencatatkan
-                                partisipasi hanya 73,84%. Biaya tinggi tidak otomatis berarti
-                                akses yang lebih luas.
-                            </p>
-                            <div class="compare-pair">
-                                <div class="compare-pair__item compare-pair__item--low">
-                                    <span class="compare-pair__value">44,61%</span>
-                                    <span class="compare-pair__label">Papua Tengah</span>
-                                </div>
-                                <div class="compare-pair__divider">vs</div>
-                                <div class="compare-pair__item compare-pair__item--high">
-                                    <span class="compare-pair__value">93,03%</span>
-                                    <span class="compare-pair__label">DIY Yogyakarta</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Chart: Bar APS 16-18 per provinsi -->
-                        <div class="chart-wrapper" id="chart-aps">
-                            <canvas id="canvas-aps"></canvas>
-                            <p class="chart-caption">Angka Partisipasi Sekolah Usia 16–18 Tahun (%)</p>
-                        </div>
-                    </div>
-
-                    <div class="layout__stat">
-                        <div class="stat-block" id="aps-number">
-                            <span class="stat-block__value"><!-- diisi JS --></span>
-                            <span class="stat-block__unit">%</span>
-                        </div>
-                        <div class="stat-block__label">APS Usia 16–18 Terendah</div>
-                        <div class="stat-block__detail">Papua Selatan</div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- 2C — Rata" Biaya Sekolah -->
-            <div class="scrolly-step" data-step="biaya-stat">
-                <div class="layout layout--split">
-
-                    <div class="layout__stat">
-                        <div class="stat-block" id="biaya-number">
-                            <span class="stat-block__value"><!-- diisi JS --></span>
-                            <span class="stat-block__unit">jt</span>
-                        </div>
-                        <div class="stat-block__label">Biaya SMA Tertinggi per Tahun</div>
-                        <div class="stat-block__detail">Papua — Rp17,91 juta</div>
-                    </div>
-
-                    <div class="layout__narasi">
-                        <div class="section-index">05</div>
-                        <h2 class="section-heading">Biaya Sekolah yang Mencekik</h2>
-                        <div class="narasi">
-                            <p>
-                                Biaya pendidikan antarprovinsi sangat timpang. Di Papua,
-                                biaya SMA bisa mencapai Rp17,91 juta per tahun, sementara
-                                di Maluku hanya Rp4,99 juta. Paradoksnya,
-                                Sumatera Selatan dengan biaya SMA Rp14,6 juta justru
-                                mencatat partisipasi lebih rendah daripada Maluku.
-                            </p>
-                            <p>
-                                Biaya tinggi tanpa daya beli yang memadai hanya memperlebar
-                                jurang ketimpangan, bukan memperluas akses.
-                            </p>
-                        </div>
-                        <!-- Chart: Bar grouped biaya SD/SMP/SMA per provinsi -->
-                        <div class="chart-wrapper" id="chart-biaya">
-                            <canvas id="canvas-biaya"></canvas>
-                            <p class="chart-caption">Rata-rata Biaya Pendidikan per Jenjang (Juta Rupiah)</p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ========================================================
-       SECTION 3 — PETA PERSEBARAN SPPG + Sekolah
-  ======================================================== -->
-    <section class="section section--map" id="peta">
-        <div class="container">
-
-            <!-- 3A — Peta SPPG -->
-            <div class="scrolly-step" data-step="peta-mbg">
-                <div class="section-index">06</div>
-                <h2 class="section-heading">Persebaran Program MBG di Indonesia</h2>
-                <div class="narasi narasi--center">
-                    <p>
-                        Seberapa merata program Makan Bergizi Gratis menjangkau
-                        wilayah dengan angka stunting dan gizi tertinggi?
-                        Peta berikut memperlihatkan distribusi program MBG di
-                        seluruh Indonesia berdasarkan jumlah SPPG.
-                    </p>
-                </div>
-                <!-- Map: Choropleth/bubble map MBG coverage -->
-                <div class="map-wrapper" id="map-mbg">
-                    <!-- map diinject di sini -->
-                    <div class="map-placeholder">
-                        <span>Peta Persebaran SPPG</span>
+            <!-- STEP 1: STUNTING — bar chart dengan toggle usia -->
+            <section class="step" data-step="stunting">
+                <div class="narasi-card">
+                    <div class="step-index">01 — KRISIS GIZI</div>
+                    <h2 class="section-heading">Beban Stunting yang Tidak Merata</h2>
+                    <p>Satu dari lima anak Indonesia gagal tumbuh akibat kekurangan gizi kronis. Prevalensi berbeda
+                        signifikan
+                        antarprovinsi dan antarkelompok usia. Gunakan tombol di bawah untuk melihat perbedaannya.</p>
+                    <div class="stat-highlight">
+                        <span class="stat-value" id="stunting-max-val">42.9</span>
+                        <span class="stat-unit">%</span>
+                        <div class="stat-label">Stunting tertinggi SMP — Aceh</div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- 3B — Peta Sekolah -->
-            <div class="scrolly-step" data-step="peta-sekolah">
-                <div class="section-index">07</div>
-                <h2 class="section-heading">Persebaran Sekolah di Indonesia</h2>
-                <div class="narasi narasi--center">
-                    <p>
-                        Bandingkan distribusi sekolah dengan sebaran program MBG —
-                        apakah keduanya menjangkau wilayah yang sama?
-                    </p>
+            <!-- STEP 2: RLS — bar horizontal -->
+            <section class="step" data-step="rls">
+                <div class="narasi-card">
+                    <div class="step-index">02 — CAPAIAN BELAJAR</div>
+                    <h2 class="section-heading">Rata-rata Lama Sekolah yang Timpang</h2>
+                    <p>Papua Pegunungan hanya mencapai 4,3 tahun rata-rata lama sekolah — tidak sampai lulus SD.
+                        DKI Jakarta mencapai 11,59 tahun. Selisih 7,29 tahun ini mencerminkan ketimpangan struktural
+                        yang tidak bisa diselesaikan hanya dengan menggratiskan biaya SPP.</p>
                 </div>
-                <!-- Map: Choropleth/bubble map distribusi sekolah -->
-                <div class="map-wrapper" id="map-sekolah">
-                    <!-- map diinject di sini -->
-                    <div class="map-placeholder">
-                        <span>Peta Persebaran Sekolah</span>
-                    </div>
-                </div>
-            </div>
+            </section>
 
-        </div>
-    </section>
-
-    <!-- ========================================================
-       SECTION 4 — KORELASI
-  ======================================================== -->
-    <section class="section section--data" id="korelasi">
-        <div class="container">
-
-            <!-- 4A — Akses Gizi vs RLS -->
-            <div class="scrolly-step" data-step="korelasi-gizi-rls">
-                <div class="layout layout--split">
-                    <div class="layout__narasi">
-                        <div class="section-index">08</div>
-                        <h2 class="section-heading">Gizi yang Lebih Baik, Sekolah Lebih Lama?</h2>
-                        <div class="narasi">
-                            <p>
-                                Provinsi dengan akses gizi yang lebih baik cenderung
-                                mencatatkan rata-rata lama sekolah yang lebih tinggi.
-                                Korelasi ini bukan sebab-akibat langsung, namun
-                                menunjukkan bahwa keduanya bergerak bersama sebagai
-                                cerminan kondisi kesejahteraan suatu daerah.
-                            </p>
-                            <p>
-                                Anak yang tumbuh sehat memiliki kapasitas kognitif yang
-                                lebih baik — dan itu tercermin dalam lamanya mereka
-                                bertahan di bangku sekolah.
-                            </p>
-                        </div>
-                    </div>
-                    <!-- Chart: Scatter plot Akses Gizi vs RLS -->
-                    <div class="chart-wrapper" id="chart-korelasi-gizi-rls">
-                        <canvas id="canvas-korelasi-gizi-rls"></canvas>
-                        <p class="chart-caption">Korelasi Akses Gizi vs Rata-rata Lama Sekolah</p>
+            <!-- STEP 3: APS — bar chart dengan toggle usia -->
+            <section class="step" data-step="aps">
+                <div class="narasi-card">
+                    <div class="step-index">03 — PARTISIPASI SEKOLAH</div>
+                    <h2 class="section-heading">Angka Partisipasi yang Mengkhawatirkan</h2>
+                    <p>Papua Tengah hanya mencatatkan 44,61% remaja usia 16-18 tahun yang masih bersekolah.
+                        Lebih dari separuh sudah putus sekolah. Biaya tinggi tanpa daya beli yang memadai
+                        tidak menjamin akses pendidikan yang lebih luas.</p>
+                    <div class="stat-highlight">
+                        <span class="stat-value">44.61</span>
+                        <span class="stat-unit">%</span>
+                        <div class="stat-label">APS SMA terendah — Papua Tengah</div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- 4B — Anggaran vs Gizi -->
-            <div class="scrolly-step" data-step="korelasi-anggaran-gizi">
-                <div class="layout layout--split layout--reversed">
-                    <!-- Chart: Scatter plot Anggaran vs Gizi -->
-                    <div class="chart-wrapper" id="chart-korelasi-anggaran-gizi">
-                        <canvas id="canvas-korelasi-anggaran-gizi"></canvas>
-                        <p class="chart-caption">Korelasi Anggaran Daerah vs Akses Gizi</p>
-                    </div>
-                    <div class="layout__narasi">
-                        <div class="section-index">09</div>
-                        <h2 class="section-heading">Anggaran Lebih Besar, Gizi Lebih Baik?</h2>
-                        <div class="narasi">
-                            <p>
-                                Apakah daerah dengan anggaran pendidikan dan kesehatan
-                                yang lebih besar berhasil meningkatkan akses gizi anak-anaknya?
-                                Scatter plot ini mengungkap seberapa kuat — atau lemah —
-                                hubungan tersebut di antara 38 provinsi.
-                            </p>
-                        </div>
-                    </div>
+            <!-- STEP 4: BIAYA — bar grouped -->
+            <section class="step" data-step="biaya">
+                <div class="narasi-card">
+                    <div class="step-index">04 — BIAYA PENDIDIKAN</div>
+                    <h2 class="section-heading">Paradoks Biaya Tinggi</h2>
+                    <p>Sumatera Selatan memiliki biaya SMA tertinggi kedua (Rp14,6 juta), namun partisipasi
+                        sekolah usia 16-18 tahun hanya 73,78%. Maluku dengan biaya SMA terendah (Rp4,99 juta)
+                        justru mencatatkan partisipasi lebih tinggi.</p>
                 </div>
-            </div>
+            </section>
 
-            <!-- 4C — Anggaran vs RLS -->
-            <div class="scrolly-step" data-step="korelasi-anggaran-rls">
-                <div class="layout layout--split">
-                    <div class="layout__narasi">
-                        <div class="section-index">10</div>
-                        <h2 class="section-heading">Anggaran yang Lebih Besar, Pendidikan yang Lebih Lama?</h2>
-                        <div class="narasi">
-                            <p>
-                                Pertanyaan yang sama berlaku untuk pendidikan. Apakah
-                                daerah yang mengalokasikan lebih banyak anggaran
-                                benar-benar menghasilkan rata-rata lama sekolah yang
-                                lebih tinggi? Atau ada faktor lain yang lebih menentukan?
-                            </p>
-                        </div>
-                    </div>
-                    <!-- Chart: Scatter plot Anggaran vs RLS -->
-                    <div class="chart-wrapper" id="chart-korelasi-anggaran-rls">
-                        <canvas id="canvas-korelasi-anggaran-rls"></canvas>
-                        <p class="chart-caption">Korelasi Anggaran Daerah vs Rata-rata Lama Sekolah</p>
-                    </div>
+            <!-- STEP 5: PETA SPPG -->
+            <section class="step" data-step="peta-sppg">
+                <div class="narasi-card">
+                    <div class="step-index">05 — INFRASTRUKTUR GIZI</div>
+                    <h2 class="section-heading">Persebaran Unit Layanan MBG</h2>
+                    <p>Satuan Pelayanan Pemenuhan Gizi (SPPG) tersebar tidak merata. Jawa mendominasi jumlah unit,
+                        sementara Papua — wilayah dengan stunting tertinggi — justru kekurangan jangkauan layanan.</p>
                 </div>
-            </div>
+            </section>
 
-        </div>
-    </section>
-
-    <!-- ========================================================
-       SECTION 5 — PERBANDINGAN ANGGARAN & TARGET
-       PDF Hal. 7: Target Gizi vs Kenaikan RLS,
-                   Anggaran MBG vs Anggaran Pendidikan
-  ======================================================== -->
-    <section class="section section--data section--alt" id="anggaran">
-        <div class="container">
-
-            <div class="scrolly-step" data-step="anggaran-komparasi">
-                <div class="section-index">11</div>
-                <h2 class="section-heading section-heading--center">
-                    Mana yang Lebih Efisien: MBG atau Pendidikan?
-                </h2>
-                <div class="narasi narasi--center">
-                    <p>
-                        Program MBG dianggarkan senilai Rp400 triliun per tahun.
-                        Anggaran pendidikan nasional dialokasikan sebesar 20% dari APBN.
-                        Pertanyaannya: per rupiah yang dikeluarkan, program mana
-                        yang menghasilkan dampak lebih besar pada kualitas hidup anak?
-                    </p>
+            <!-- STEP 6: PETA SEKOLAH -->
+            <section class="step" data-step="peta-sekolah">
+                <div class="narasi-card">
+                    <div class="step-index">06 — INFRASTRUKTUR PENDIDIKAN</div>
+                    <h2 class="section-heading">Persebaran Unit Sekolah</h2>
+                    <p>Bandingkan sebaran unit sekolah dengan sebaran SPPG. Daerah dengan sekolah sedikit
+                        umumnya juga kekurangan layanan gizi — ketimpangan yang saling memperkuat.</p>
                 </div>
+            </section>
 
-                <div class="vs-layout">
-
-                    <!-- Sisi MBG -->
-                    <div class="vs-card vs-card--mbg">
-                        <div class="vs-card__icon">MBG</div>
-                        <div class="vs-card__stat" id="stat-target-gizi">
-                            <span class="stat-block__value"><!-- diisi JS --></span>
-                        </div>
-                        <div class="vs-card__label">Target Pemenuhan Gizi Anak</div>
-                        <!-- Chart: Progress atau bar anggaran MBG -->
-                        <div class="chart-wrapper" id="chart-anggaran-mbg">
-                            <canvas id="canvas-anggaran-mbg"></canvas>
-                            <p class="chart-caption">Anggaran MBG (Triliun Rupiah)</p>
-                        </div>
-                        <div class="vs-card__narasi">
-                            <p>
-                                MBG menjangkau jutaan siswa setiap hari, langsung
-                                mengatasi masalah gizi jangka pendek. Namun tanpa
-                                akses sekolah yang memadai, efeknya berhenti di sana.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="vs-divider">vs</div>
-
-                    <!-- Sisi Pendidikan -->
-                    <div class="vs-card vs-card--pendidikan">
-                        <div class="vs-card__icon">DIKTI</div>
-                        <div class="vs-card__stat" id="stat-target-rls">
-                            <span class="stat-block__value"><!-- diisi JS --></span>
-                        </div>
-                        <div class="vs-card__label">Target Kenaikan Rata-rata Lama Sekolah</div>
-                        <!-- Chart: Progress atau bar anggaran pendidikan -->
-                        <div class="chart-wrapper" id="chart-anggaran-pendidikan">
-                            <canvas id="canvas-anggaran-pendidikan"></canvas>
-                            <p class="chart-caption">Anggaran Pendidikan (Triliun Rupiah)</p>
-                        </div>
-                        <div class="vs-card__narasi">
-                            <p>
-                                Investasi pendidikan bekerja dalam jangka panjang.
-                                Hasilnya tidak terasa dalam satu tahun anggaran,
-                                namun berdampak pada generasi secara keseluruhan.
-                            </p>
-                        </div>
-                    </div>
-
+            <!-- STEP 7: SCATTER KORELASI PROTEIN vs RLS -->
+            <section class="step" data-step="korelasi-protein-rls">
+                <div class="narasi-card">
+                    <div class="step-index">07 — KORELASI</div>
+                    <h2 class="section-heading">Gizi Lebih Baik, Sekolah Lebih Lama?</h2>
+                    <p>Provinsi dengan asupan protein yang lebih tinggi cenderung mencatatkan rata-rata lama
+                        sekolah lebih panjang. Koefisien korelasi Pearson mengungkap kekuatan hubungan ini
+                        secara statistik di seluruh 38 provinsi.</p>
                 </div>
-            </div>
+            </section>
 
-        </div>
-    </section>
-
-
-    <!-- ========================================================
-       SECTION 6 — KESIMPULAN
-  ======================================================== -->
-    <section class="section section--conclusion" id="kesimpulan">
-        <div class="container">
-
-            <div class="conclusion">
-                <div class="section-index">&#x2726;</div>
-                <h2 class="conclusion__heading">Tidak Ada Jawaban Tunggal</h2>
-                <div class="conclusion__body">
-                    <p class="conclusion__lead">
-                        Data dari 38 provinsi menunjukkan bahwa pendidikan gratis tanpa
-                        perbaikan gizi tidak akan efektif. Sebaliknya, program MBG tanpa
-                        akses sekolah yang nyata hanya menjadi solusi jangka pendek.
-                    </p>
-                    <p>
-                        Daerah-daerah seperti Papua Pegunungan dan Papua Tengah
-                        membutuhkan keduanya secara bersamaan: perut yang cukup terisi
-                        dan sekolah yang benar-benar bisa dijangkau tanpa beban biaya.
-                        Kebijakan yang tidak membaca konteks lokal hanya akan
-                        memperbesar kesenjangan yang sudah ada.
-                    </p>
-                    <blockquote class="conclusion__quote">
-                        Kebijakan yang tepat sasaran harus berbasis data —
-                        bukan asumsi bahwa satu solusi berlaku untuk semua.
-                    </blockquote>
+            <!-- STEP 8: SCATTER KORELASI PROTEIN vs STUNTING -->
+            <section class="step" data-step="korelasi-protein-stunting">
+                <div class="narasi-card">
+                    <div class="step-index">08 — KORELASI</div>
+                    <h2 class="section-heading">Lebih Banyak Protein, Lebih Sedikit Stunting?</h2>
+                    <p>Hubungan antara konsumsi protein dan prevalensi stunting diuji secara statistik.
+                        Apakah peningkatan asupan gizi secara langsung berkorelasi dengan penurunan stunting,
+                        ataukah ada variabel pengganggu lain yang lebih dominan?</p>
                 </div>
+            </section>
 
-                <!-- Ringkasan angka kunci -->
-                <div class="conclusion__stats">
-                    <div class="conclusion__stat-item">
-                        <span class="conclusion__stat-value">38</span>
-                        <span class="conclusion__stat-label">Provinsi dianalisis</span>
-                    </div>
-                    <div class="conclusion__stat-item">
-                        <span class="conclusion__stat-value">4,30</span>
-                        <span class="conclusion__stat-label">Tahun RLS terendah (Papua Pegunungan)</span>
-                    </div>
-                    <div class="conclusion__stat-item">
-                        <span class="conclusion__stat-value">44,61%</span>
-                        <span class="conclusion__stat-label">APS 16–18 terendah (Papua Tengah)</span>
-                    </div>
-                    <div class="conclusion__stat-item">
-                        <span class="conclusion__stat-value">Rp400 T</span>
-                        <span class="conclusion__stat-label">Anggaran MBG per tahun</span>
-                    </div>
+            <!-- STEP 9: ANGGARAN KOMPARASI -->
+            <section class="step" data-step="anggaran">
+                <div class="narasi-card">
+                    <div class="step-index">09 — KOMPARASI ANGGARAN</div>
+                    <h2 class="section-heading">Investasi Rp400 Triliun</h2>
+                    <p>Program MBG dianggarkan Rp400 triliun per tahun, sementara anggaran pendidikan nasional
+                        mencapai Rp665 triliun (20% APBN). Per rupiah yang dikeluarkan, program mana yang
+                        menghasilkan dampak jangka panjang paling signifikan?</p>
                 </div>
-            </div>
+            </section>
 
-        </div>
-    </section>
+            <!-- STEP 10: KESIMPULAN -->
+            <section class="step step--final" data-step="conclusion">
+                <div class="narasi-card narasi-card--conclusion">
+                    <div class="step-index">KESIMPULAN</div>
+                    <h2 class="conclusion-title">Sinergi, Bukan Dikotomi</h2>
+                    <p>Data dari 38 provinsi membuktikan: pendidikan gratis tanpa gizi tidak efektif,
+                        begitu pula sebaliknya. Daerah seperti Papua Pegunungan dan Papua Tengah membutuhkan
+                        keduanya secara bersamaan. Kebijakan yang tepat sasaran harus berbasis konteks lokal,
+                        bukan asumsi bahwa satu solusi berlaku untuk semua.</p>
+                    <button class="btn-reset" onclick="window.scrollTo({top:0,behavior:'smooth'})">Baca Ulang</button>
+                </div>
+            </section>
 
-    <!-- ========================================================
-       SCRIPTS
-  ======================================================== -->
-    <script src="js/charts/stunting.js"></script>
-    <script src="js/charts/gizi.js"></script>
-    <script src="js/charts/rls.js"></script>
-    <script src="js/charts/aps.js"></script>
-    <script src="js/charts/biaya.js"></script>
+        </article>
+    </main>
+
+    <script src="js/charts/barchart.js"></script>
     <script src="js/charts/peta.js"></script>
-    <script src="js/charts/korelasi.js"></script>
+    <script src="js/charts/scatterchart.js"></script>
     <script src="js/charts/anggaran.js"></script>
     <script src="js/main.js"></script>
-
 </body>
+
 </html>
