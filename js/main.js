@@ -10,6 +10,7 @@ let globalData = null;
 let currentStep = null;
 let currentAgeStunting = 'Stunting 5-12';
 let currentAgeAPS = 'APS 16-18';
+let currentAgeBiaya = 'Biaya SMA';
 
 // Perbarui progress bar scroll
 function updateProgressBar() {
@@ -21,12 +22,14 @@ function updateProgressBar() {
 // Tampilkan / sembunyikan age toggle berdasarkan step aktif
 function setAgeToggleVisibility(step) {
   const toggle = document.getElementById('age-toggle');
-  const stepsWithToggle = ['stunting', 'aps'];
+  const stepsWithToggle = ['stunting', 'aps', 'biaya'];
   toggle.classList.toggle('hidden', !stepsWithToggle.includes(step));
 
   // Update label tombol sesuai konteks step
   const labels = step === 'aps'
     ? [['7-12', 'SD (7-12)'], ['13-15', 'SMP (13-15)'], ['16-18', 'SMA (16-18)']]
+    : step === 'biaya'
+    ? [['SD', 'SD (7-12)'], ['SMP', 'SMP (13-15)'], ['SMA', 'SMA/SMK (16-18)']]
     : [['5-12', 'SD (5-12)'], ['13-15', 'SMP (13-15)'], ['16-18', 'SMA (16-18)']];
 
   document.querySelectorAll('.age-btn').forEach((btn, i) => {
@@ -54,6 +57,10 @@ function handleStepEnter({ element }) {
     currentAgeAPS = 'APS 16-18';
     setActiveAgeBtn('16-18');
   }
+  if (step === 'biaya') {
+    currentAgeBiaya = 'Biaya SMA';
+    setActiveAgeBtn('SMA');
+  }
 
   switch (step) {
     case 'cover':
@@ -69,7 +76,7 @@ function handleStepEnter({ element }) {
       drawAPSChart(globalData, currentAgeAPS);
       break;
     case 'biaya':
-      drawBiayaChart(globalData);
+      drawBiayaChart(globalData, currentAgeBiaya);
       break;
     case 'peta-sppg':
       drawMap('SPPG (unit)', globalData, 'orange');
@@ -121,6 +128,10 @@ function handleAgeToggle(event) {
     const key = `APS ${age}`;
     currentAgeAPS = key;
     updateAPSChart(globalData, key);
+  } else if (currentStep === 'biaya') {
+    const key = `Biaya ${age}`;
+    currentAgeBiaya = key;
+    updateBiayaChart(globalData, key);
   }
 }
 
