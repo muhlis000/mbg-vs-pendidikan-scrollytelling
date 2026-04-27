@@ -79,7 +79,7 @@ function handleStepEnter({ element }) {
       drawBiayaChart(globalData, currentAgeBiaya);
       break;
     case 'peta-sppg':
-      drawMap('SPPG (unit)', globalData, 'orange');
+      drawMap();
       break;
     case 'peta-sekolah':
       // Gunakan total sekolah (SD + SMP + SMA) sebagai kolom turunan
