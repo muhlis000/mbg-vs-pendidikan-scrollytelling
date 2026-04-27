@@ -346,84 +346,138 @@ function updateAPSChart(data, ageKey) {
   svg.select('.chart-label').text(`5 Provinsi APS Terendah — ${ageLabel[ageKey] || ageKey} (%)`);
 }
 
-// Bar chart grouped horizontal — Biaya pendidikan (5 termahal SMA)
-function drawBiayaChart(data) {
-  const W = 860, H = 460;
-  const sorted = getWorst5(data, 'Rata-rata Biaya SMA/SMK Sederajat (Juta)');
+// Bar chart vertikal — Biaya pendidikan dengan toggle jenjang (meniru pola APS)
+function drawBiayaChart(data, jenjangKey = 'Biaya SMA') {
+  const W = 860, H = 480;
+  const biayaKeyMap = {
+    'Biaya SD':  'Rata-rata Biaya SD Sederajat (Juta)',
+    'Biaya SMP': 'Rata-rata Biaya SMP Sederajat (Juta)',
+    'Biaya SMA': 'Rata-rata Biaya SMA/SMK Sederajat (Juta)',
+  };
+  const colKey = biayaKeyMap[jenjangKey];
+  const sorted = getWorst5(data, colKey);
   const svg = initSvg('d3-visual-target', W, H);
 
-  const jenjang = [
-    { key: 'Rata-rata Biaya SD Sederajat (Juta)',    label: 'SD',  color: BAR_COLORS.muted },
-    { key: 'Rata-rata Biaya SMP Sederajat (Juta)',   label: 'SMP', color: BAR_COLORS.blue },
-    { key: 'Rata-rata Biaya SMA/SMK Sederajat (Juta)', label: 'SMA', color: BAR_COLORS.orange },
-  ];
-
-  const xMax = d3.max(sorted, d => d['Rata-rata Biaya SMA/SMK Sederajat (Juta)']);
-  const x = d3.scaleLinear()
-    .domain([0, Math.ceil(xMax / 2) * 2 + 2])
-    .range([MARGIN_H.left, W - MARGIN_H.right]);
-
-  const y0 = d3.scaleBand()
+  const x = d3.scaleBand()
     .domain(sorted.map(d => d.Provinsi))
-    .range([MARGIN_H.top, H - MARGIN_H.bottom + 10])
-    .padding(0.2);
+    .range([MARGIN.left, W - MARGIN.right])
+    .padding(0.32);
 
-  const y1 = d3.scaleBand()
-    .domain(jenjang.map(j => j.label))
-    .range([0, y0.bandwidth()])
-    .padding(0.08);
+  const yMax = Math.ceil(d3.max(data, d => d[colKey]) / 2) * 2 + 2;
+  const y = d3.scaleLinear()
+    .domain([0, yMax])
+    .range([H - MARGIN.bottom, MARGIN.top]);
 
+  // Grid lines
+  svg.append('g')
+    .attr('class', 'grid')
+    .attr('transform', `translate(${MARGIN.left},0)`)
+    .call(d3.axisLeft(y).ticks(5).tickSize(-(W - MARGIN.left - MARGIN.right)).tickFormat(''))
+    .call(g => g.select('.domain').remove())
+    .call(g => g.selectAll('line').style('stroke', 'rgba(245,240,232,0.06)'));
+
+  // Axis X
   svg.append('g')
     .attr('class', 'chart-axis')
-    .attr('transform', `translate(${MARGIN_H.left},0)`)
-    .call(d3.axisLeft(y0).tickSize(0))
+    .attr('transform', `translate(0,${H - MARGIN.bottom})`)
+    .call(d3.axisBottom(x).tickSize(0))
     .call(g => g.select('.domain').remove())
     .selectAll('text')
     .style('fill', '#F5F0E8')
     .style('font-family', "'DM Sans', sans-serif")
-    .style('font-size', '12px');
+    .style('font-size', '12px')
+    .attr('dy', '1.2em')
+    .call(wrapText, x.bandwidth() + 8);
 
+  // Axis Y
   svg.append('g')
     .attr('class', 'chart-axis')
-    .attr('transform', `translate(0,${H - MARGIN_H.bottom + 10})`)
-    .call(d3.axisBottom(x).ticks(5).tickFormat(d => `Rp${d}jt`))
+    .attr('transform', `translate(${MARGIN.left},0)`)
+    .call(d3.axisLeft(y).ticks(5).tickFormat(d => `Rp${d}jt`))
     .call(g => g.select('.domain').remove());
 
-  const provinceGroups = svg.selectAll('.prov-group')
+  // Bars
+  const bars = svg.selectAll('.bar')
     .data(sorted)
-    .enter().append('g')
-    .attr('class', 'prov-group')
-    .attr('transform', d => `translate(0,${y0(d.Provinsi)})`);
+    .enter().append('rect')
+    .attr('class', 'bar')
+    .attr('x', d => x(d.Provinsi))
+    .attr('width', x.bandwidth())
+    .attr('y', H - MARGIN.bottom)
+    .attr('height', 0)
+    .attr('rx', 4)
+    .attr('fill', (d, i) => i === 0 ? BAR_COLORS.orange : BAR_COLORS.muted);
 
-  jenjang.forEach(j => {
-    provinceGroups.append('rect')
-      .attr('y', y1(j.label))
-      .attr('height', y1.bandwidth())
-      .attr('x', MARGIN_H.left)
-      .attr('width', 0)
-      .attr('rx', 3)
-      .attr('fill', j.color)
-      .transition().duration(700).ease(d3.easeCubicOut)
-      .attr('width', d => x(d[j.key]) - MARGIN_H.left);
-  });
+  bars.transition().duration(700).ease(d3.easeCubicOut)
+    .attr('y', d => y(d[colKey]))
+    .attr('height', d => (H - MARGIN.bottom) - y(d[colKey]));
 
-  // Legend
-  const legend = svg.append('g').attr('transform', `translate(${W - 90}, ${MARGIN_H.top})`);
-  jenjang.forEach((j, i) => {
-    legend.append('rect').attr('y', i * 22).attr('width', 10).attr('height', 10).attr('rx', 2).attr('fill', j.color);
-    legend.append('text').attr('x', 16).attr('y', i * 22 + 9)
-      .style('fill', '#8B95A8').style('font-size', '11px')
-      .style('font-family', "'JetBrains Mono', monospace").text(j.label);
-  });
+  // Label nilai di atas bar
+  svg.selectAll('.bar-lbl')
+    .data(sorted)
+    .enter().append('text')
+    .attr('class', 'bar-lbl chart-label')
+    .attr('x', d => x(d.Provinsi) + x.bandwidth() / 2)
+    .attr('y', H - MARGIN.bottom)
+    .attr('text-anchor', 'middle')
+    .style('font-size', '13px')
+    .transition().duration(700).ease(d3.easeCubicOut)
+    .attr('y', d => y(d[colKey]) - 8)
+    .text(d => `Rp${d[colKey]}jt`);
 
+  // Chart title
+  const jenjangLabel = { 'Biaya SD': 'SD', 'Biaya SMP': 'SMP', 'Biaya SMA': 'SMA/SMK' };
   svg.append('text')
     .attr('class', 'chart-label')
     .attr('x', W / 2)
-    .attr('y', MARGIN_H.top - 4)
+    .attr('y', 22)
     .attr('text-anchor', 'middle')
     .style('font-size', '14px')
+    .style('letter-spacing', '0.04em')
     .style('fill', '#8B95A8')
-    .text('5 Provinsi Biaya Pendidikan Tertinggi (Juta Rupiah/Tahun)');
+    .text(`5 Provinsi Biaya ${jenjangLabel[jenjangKey]} Tertinggi (Juta Rupiah/Tahun)`);
+}
+
+// Transisi Biaya ketika toggle jenjang berubah
+function updateBiayaChart(data, jenjangKey) {
+  const biayaKeyMap = {
+    'Biaya SD':  'Rata-rata Biaya SD Sederajat (Juta)',
+    'Biaya SMP': 'Rata-rata Biaya SMP Sederajat (Juta)',
+    'Biaya SMA': 'Rata-rata Biaya SMA/SMK Sederajat (Juta)',
+  };
+  const colKey = biayaKeyMap[jenjangKey];
+  const sorted = getWorst5(data, colKey);
+  const W = 860, H = 480;
+
+  const yMax = Math.ceil(d3.max(data, d => d[colKey]) / 2) * 2 + 2;
+  const y = d3.scaleLinear()
+    .domain([0, yMax])
+    .range([H - MARGIN.bottom, MARGIN.top]);
+
+  const x = d3.scaleBand()
+    .domain(sorted.map(d => d.Provinsi))
+    .range([MARGIN.left, W - MARGIN.right])
+    .padding(0.32);
+
+  const svg = d3.select('#d3-visual-target svg');
+
+  svg.selectAll('.bar')
+    .data(sorted)
+    .transition().duration(600).ease(d3.easeCubicInOut)
+    .attr('x', d => x(d.Provinsi))
+    .attr('y', d => y(d[colKey]))
+    .attr('height', d => (H - MARGIN.bottom) - y(d[colKey]))
+    .attr('fill', (d, i) => i === 0 ? BAR_COLORS.orange : BAR_COLORS.muted);
+
+  svg.selectAll('.bar-lbl')
+    .data(sorted)
+    .transition().duration(600).ease(d3.easeCubicInOut)
+    .attr('x', d => x(d.Provinsi) + x.bandwidth() / 2)
+    .attr('y', d => y(d[colKey]) - 8)
+    .text(d => `Rp${d[colKey]}jt`);
+
+  const jenjangLabel = { 'Biaya SD': 'SD', 'Biaya SMP': 'SMP', 'Biaya SMA': 'SMA/SMK' };
+  svg.select('.chart-label').text(`5 Provinsi Biaya ${jenjangLabel[jenjangKey]} Tertinggi (Juta Rupiah/Tahun)`);
 }
 
 // Utility: wrap long axis labels
